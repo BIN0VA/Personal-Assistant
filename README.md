@@ -1,1 +1,34 @@
 # Personal Assistant
+
+## Development
+
+```bash
+$ git clone git@github.com:BIN0VA/Personal-Assistant.git
+$ cd Personal-Assistant
+$ django-admin startproject personal_assistant
+$ cd personal_assistant
+$ python manage.py startapp pa_core
+$ python manage.py makemigrations
+```
+
+## Deployment
+
+```bash
+$ git clone https://github.com/BIN0VA/Personal-Assistant.git
+$ cd Personal-Assistant
+$ poetry shell
+$ poetry install
+$ cd personal_assistant
+$ python manage.py migrate
+$ python manage.py createsuperuser
+```
+
+## Usage
+
+```bash
+$ poetry shell
+$ cd personal_assistant
+$ python manage.py runserver
+```
+
+Go to http://localhost:8000.
