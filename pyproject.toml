@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "personal-assistant"
+version = "0.1.0"
+description = ""
+authors = [
+    "Oleksandr Horbatiuk <oleksandr.v.horbatiuk@gmail.com>",
+]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
