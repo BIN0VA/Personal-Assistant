@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pa_core',
+    'contacts', #Додав свій застосунок contacts 
     'pa_user',
     'pa_news', # застосунок по новинам
 ]
@@ -88,10 +89,15 @@ WSGI_APPLICATION = 'personal_assistant.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+#Підключення до БД
+DATABASES = { 
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '567234',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
         **{
             name.removeprefix('DATABASE_'):
             loads(env(name)) if name == 'DATABASE_OPTIONS' else env(name)

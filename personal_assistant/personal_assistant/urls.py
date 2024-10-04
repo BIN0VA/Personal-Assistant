@@ -21,6 +21,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('pa_core.urls')),
+    path('', include('contacts.urls')), #Додав файл urls зі свого застосунку contacts
     path('user/', include('pa_user.urls')),
     path('admin/', admin.site.urls),
      path('news/', include('pa_news.urls')), #url для сторінки новин
