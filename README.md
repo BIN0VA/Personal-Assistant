@@ -1,5 +1,7 @@
 # Personal Assistant
 
+It assists you in organizing the phone book, creating notes, and more.
+
 ## Development
 
 ```bash

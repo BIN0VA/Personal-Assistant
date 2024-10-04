@@ -8,11 +8,16 @@ class FormHelper:
         self.validate(self)
 
     @staticmethod
-    def attributes(identifier: str) -> dict:
+    def attributes(identifier: str, placeholder: str = None) -> dict:
         if not identifier:
             raise ValueError('The tag identifier can not be empty.')
 
-        return {'id': identifier, 'class': 'form-control'}
+        result = {'id': identifier, 'class': 'form-control'}
+
+        if placeholder:
+            result['placeholder'] = placeholder
+
+        return result
 
     @staticmethod
     def validate(form: Any) -> None:

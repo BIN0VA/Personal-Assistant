@@ -10,13 +10,13 @@ USERNAME = {'min_length': 3, 'max_length': 16, 'required': True}
 
 class LoginForm(AuthenticationForm):
     username = CharField(
-        widget=TextInput(FormHelper.attributes('username')),
+        widget=TextInput(FormHelper.attributes('username', 'me@example.com')),
         **USERNAME,
     )
 
     password = CharField(
         required=True,
-        widget=PasswordInput(FormHelper.attributes('password')),
+        widget=PasswordInput(FormHelper.attributes('password', 'Password')),
     )
 
     def __init__(self, *args: tuple, **kwargs: dict) -> None:
