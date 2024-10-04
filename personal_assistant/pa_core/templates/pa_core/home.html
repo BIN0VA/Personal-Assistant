@@ -34,6 +34,30 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto">
           </ul>
+          <span class="navbar-text">
+            Hello,
+
+            {% if user.is_anonymous %}
+              guest
+            {% else %}
+              {{ user.username }}
+            {% endif %}
+          </span>
+          <ul class="navbar-nav">
+            {% if user.is_anonymous %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'pa_user:login' %}">
+                  Sign in
+                </a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'pa_user:logout' %}">
+                  Logout
+                </a>
+              </li>
+            {% endif %}
+          </ul>
         </div>
       </div>
     </nav>
