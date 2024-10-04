@@ -11,64 +11,60 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-light{% if user.is_authenticated %} bg-dark" data-bs-theme="dark{% endif %}">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'pa_core:home' %}">
-            Personal Assistant
-        </a>
+    {% block navigation %}
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'pa_core:home' %}">
+            <i class="bi bi-clipboard-data"></i> Personal Assistant
+          </a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
-          </ul>
-          <span class="navbar-text">
-            Hello,
-
-            {% if user.is_anonymous %}
-              guest
-            {% else %}
-              {{ user.username }}
-            {% endif %}
-          </span>
-          <ul class="navbar-nav">
-            {% if user.is_anonymous %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'pa_user:login' %}">
-                  Sign in
-                </a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'pa_user:logout' %}">
-                  Logout
-                </a>
-              </li>
-            {% endif %}
-          </ul>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+            </ul>
+            <span class="navbar-text">Hello, {{ user.username }}</span>
+            <div class="text-end ms-3">
+              <a class="btn btn-outline-dark" href="{% url 'pa_user:logout' %}">
+                Logout
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    {% endblock %}
+
     <div class="container mt-5">
-      <h1>{% block title %}Personal Assistant{% endblock %}</h1>
+      {% block title_wrapper %}
+        <h1>{% block title %}Welcome!{% endblock %}</h1>
+      {% endblock %}
 
       {% for message in messages %}
         <div class="alert alert-danger" role="alert">{{ message }}</div>
       {% endfor %}
 
-      <main class="mt-5">{% block content %}Welcome!{% endblock %}</main>
+      <main class="mt-5">
+        {% block content %}
+          It is your personal assistant in organizing the phone book, creating notes and much more.
+        {% endblock %}
+      </main>
     </div>
 
     <script
