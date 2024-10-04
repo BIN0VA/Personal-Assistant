@@ -1,26 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Organizer</title>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
-</head>
-<body>
-<main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+
+{% extends "pa_core/home.html" %} {% block title%}
+    Contacts
+{% endblock %}
+
+{% block content %}
+
+    <nav class="nav">
         <ul>
-            <li><a href="{% url 'contacts:add_contact' %}" role="button">Create contact</a></li>
+            <li><a href="{% url 'contacts:add_contact' %}" role="button" class="btn btn-success">Create contact</a></li>
         </ul>
     </nav>
+    
 
     {% for contact in contacts %}
+    
     <ul>
         <li>
-            <a href="{% url 'contacts:detail' contact.id %}" role="button" class="outline"> {{ contact.name }} </a>
-            <a href="{% url 'contacts:delete' contact.id %}" role="button" class="contrast"> Delete contact </a>
+            <div class="card w-75 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"> {{ contact.name }} </h5>
+                    <p class="card-text">{{ contact.phone }}</p>
+                    <a href="{% url 'contacts:detail' contact.id %}" role="button" class="btn btn-info"> Details </a>
+                    <a href="{% url 'contacts:delete' contact.id %}" role="button" class="btn btn-danger"> Delete contact </a>
+                </div>
+            </div>
         </li>
     </ul>
+    
     {% endfor %}
-</main>
-</body>
-</html>
+{% endblock %}

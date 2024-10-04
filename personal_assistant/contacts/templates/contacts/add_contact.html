@@ -1,4 +1,6 @@
-{% extends "contacts/base.html" %}
+{% extends "pa_core/home.html" %} {% block title%}
+Create contact
+{% endblock %}
 
 {% block content %}
 
@@ -35,8 +37,8 @@
         <span>{{ form.errors.birthday }}</span>
     </div>
     <div class="grid">
-        <button type="submit">Submit</button>
-        <button type="reset" class="secondary">Reset</button>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
     </div>
 </form>
 {% endblock %}
