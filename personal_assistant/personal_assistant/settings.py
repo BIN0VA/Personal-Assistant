@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from environ import Env
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = Env(DEBUG=(bool, False))
+Env.read_env(BASE_DIR / '..' / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -23,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -124,3 +128,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = env('DJANGO_EMAIL_HOST')
+EMAIL_PORT = env('DJANGO_EMAIL_PORT')
+EMAIL_HOST_USER = env('DJANGO_EMAIL_USER')
+EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
