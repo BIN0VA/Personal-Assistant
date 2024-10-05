@@ -43,19 +43,21 @@
               {% endif %}
             </div>
 
-            {% block fields %}
-              <div class="form-floating mb-3">
-                {{ form.password }}
+            <div class="form-floating mb-3">
+              {{ form.password }}
 
-                <label for="password">Password</label>
+              <label for="password">Password</label>
 
-                {% if form.errors.password %}
-                  <div id="password-error" class="invalid-feedback">
-                    {{ form.errors.password }}
-                  </div>
-                {% endif %}
-              </div>
-            {% endblock %}
+              {% if form.errors.password %}
+                <div id="password-error" class="invalid-feedback">
+                  {{ form.errors.password }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <a href="{% url 'pa_user:reset' %}">Forgot Password?</a>
+            </div>
 
             <input type="hidden" name="next" value="{% url 'pa_core:home' %}">
           {% endblock %}
