@@ -1,3 +1,4 @@
+.env
 .venv
 poetry.lock
 db.sqlite3
