@@ -5,13 +5,12 @@ from django.forms import CharField, PasswordInput, TextInput
 from pa_core.forms import FormHelper
 
 
-USERNAME = {'min_length': 3, 'max_length': 16, 'required': True}
-
-
 class LoginForm(AuthenticationForm):
     username = CharField(
+        max_length=16,
+        min_length=3,
+        required=True,
         widget=TextInput(FormHelper.attributes('username', 'me@example.com')),
-        **USERNAME,
     )
 
     password = CharField(
