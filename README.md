@@ -1,5 +1,7 @@
 # Personal Assistant
 
+It assists you in organizing the phone book, creating notes, and more.
+
 ## Development
 
 ```bash
@@ -8,6 +10,7 @@ $ cd Personal-Assistant
 $ django-admin startproject personal_assistant
 $ cd personal_assistant
 $ python manage.py startapp pa_core
+$ python manage.py startapp pa_user
 $ python manage.py makemigrations
 ```
 
