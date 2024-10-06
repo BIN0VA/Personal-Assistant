@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +28,7 @@ Env.read_env(BASE_DIR / '..' / '.env')
 SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DJANGO_DEBUG')
+DEBUG = bool(env('DJANGO_DEBUG'))
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -127,6 +128,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = reverse_lazy('pa_user:login')
 
 EMAIL_HOST = env('DJANGO_EMAIL_HOST')
 EMAIL_PORT = env('DJANGO_EMAIL_PORT')

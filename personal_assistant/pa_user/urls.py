@@ -1,26 +1,22 @@
-from django.contrib.auth.views import LoginView, PasswordResetConfirmView
 from django.urls import path
 
-from .forms import PaUserAuthenticationForm
-from .views import PaUserPasswordResetView, signout
+from .views import (
+    PaUserLoginView,
+    PaUserPasswordResetCompleteView as ResetCompleteView,
+    PaUserPasswordResetConfirmView as Confirm,
+    PaUserPasswordResetDoneView as PaUserDoneView,
+    PaUserPasswordResetView,
+    signout
+)
 
 app_name = 'pa_user'
+url = 'reset-password/'
 
 urlpatterns = [
-    path(
-        'login/',
-        LoginView.as_view(
-            template_name='pa_user/login.html',
-            form_class=PaUserAuthenticationForm,
-            redirect_authenticated_user=True,
-        ),
-        name='login',
-    ),
+    path('login/', PaUserLoginView.as_view(), name='login'),
     path('logout/', signout, name='logout'),
-    path('reset-password/', PaUserPasswordResetView.as_view(), name='reset'),
-    path(
-        'reset-password/confirm/<uidb64>/<token>/',
-        PasswordResetConfirmView.as_view(),
-        name='reset_confirm',
-    ),
+    path(url, PaUserPasswordResetView.as_view(), name='reset'),
+    path(f'{url}done/', PaUserDoneView.as_view(), name='done'),
+    path(f'{url}confirm/<uidb64>/<token>/', Confirm.as_view(), name='confirm'),
+    path(f'{url}complete/', ResetCompleteView.as_view(), name='complete'),
 ]
