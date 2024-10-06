@@ -3,40 +3,40 @@
 {% block title %}Form{% endblock %}
 
 {% block content %}
-  {% if form.errors and form.non_field_errors %}
-    <div class="alert alert-danger" role="alert">
-      {{ form.non_field_errors }}
-    </div>
-  {% endif %}
+    {% if form.errors and form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
 
-  <form method="post" class="needs-validation" novalidate>
-    {% csrf_token %}
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
 
-    {% block form %}{% endblock %}
+        {% block form %}{% endblock %}
 
-    <button type="submit" class="btn btn-primary">
-      {% block button %}Submit{% endblock %}
-    </button>
-  </form>
+        <button type="submit" class="btn btn-primary">
+            {% block button %}Submit{% endblock %}
+        </button>
+    </form>
 {% endblock %}
 
 {% block footer %}
-  <script>
-    (() => {
-      'use strict'
+    <script>
+        (() => {
+            'use strict'
 
-      const forms = document.querySelectorAll('.needs-validation')
+            const forms = document.querySelectorAll('.needs-validation')
 
-      Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
 
-          form.classList.add('was-validated')
-        }, false)
-      })
-    })()
-  </script>
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 {% endblock %}
