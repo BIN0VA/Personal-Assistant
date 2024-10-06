@@ -1,0 +1,31 @@
+{% extends "pa_core/home.html" %}
+
+{% block title %}
+    Актуальні новини
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <select name="category">
+        <option value="general_news">Загальні новини</option>
+        <option value="weather">Погода</option>
+        <option value="currency">Курс валют</option>
+    </select>
+    <button type="submit">Показати</button>
+</form>
+
+{% if headlines %}
+    <h2>{{ category }}</h2>
+    <ul>
+        {% for headline in headlines %}
+            <li>
+                <a href="{{ headline.link }}">{{ headline.title }}</a> <br>
+                <small>Час публікації: {{ headline.time }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Немає доступних новин.</p>
+{% endif %}
+{% endblock %}
