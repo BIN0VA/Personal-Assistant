@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'pa_user',
     'pa_contacts',
     'pa_note',
+    'pa_news', # застосунок по новинам
 ]
 
 MIDDLEWARE = [
