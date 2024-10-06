@@ -1,11 +1,21 @@
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm
+)
 from django.contrib.auth.models import User
-from django.forms import CharField, PasswordInput, TextInput
+from django.forms import (
+    CharField,
+    EmailField,
+    EmailInput,
+    PasswordInput,
+    TextInput
+)
 
 from pa_core.forms import FormHelper
 
 
-class LoginForm(AuthenticationForm):
+class PaUserAuthenticationForm(AuthenticationForm):
     username = CharField(
         max_length=16,
         min_length=3,
@@ -26,3 +36,34 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class PaUserPasswordResetForm(PasswordResetForm):
+    email = EmailField(
+        max_length=254,
+        widget=EmailInput(FormHelper.attributes('email', 'me@example.com')),
+    )
+
+    def __init__(self, *args: tuple, **kwargs: dict) -> None:
+        super().__init__(*args, **kwargs)
+
+        FormHelper.validate(self)
+
+
+class PaUserSetPasswordForm(SetPasswordForm):
+    new_password1 = CharField(
+        required=True,
+        strip=False,
+        widget=PasswordInput(FormHelper.attributes('password', '****')),
+    )
+
+    new_password2 = CharField(
+        required=True,
+        strip=False,
+        widget=PasswordInput(FormHelper.attributes('repeat-password', '****')),
+    )
+
+    def __init__(self, user, *args: tuple, **kwargs: dict) -> None:
+        super().__init__(user, *args, **kwargs)
+
+        FormHelper.validate(self)
