@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from django.contrib.messages import constants as messages
 from django.urls import reverse_lazy
 from environ import Env
 
@@ -129,6 +130,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+MESSAGE_TAGS = {
+    key: f'alert-{value}'
+    for key, value in {
+        messages.DEBUG: 'light',
+        messages.INFO: 'primary',
+        messages.SUCCESS: 'success',
+        messages.WARNING: 'warning',
+        messages.ERROR: 'danger',
+    }.items()
+}
 
 LOGIN_URL = reverse_lazy('pa_user:login')
 

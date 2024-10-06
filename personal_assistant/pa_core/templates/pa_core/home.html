@@ -66,7 +66,29 @@
             {% endblock %}
 
             {% for message in messages %}
-                <div class="alert alert-danger" role="alert">{{ message }}</div>
+                <div
+                    class="
+                        alert
+                        {% if message.tags %}
+                            {{ message.tags }}
+                        {% else %}
+                            alert-secondary
+                        {% endif %}
+                        alert-dismissible
+                        fade
+                        show
+                    "
+                    role="alert"
+                >
+                    {{ message }}
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                    ></button>
+                </div>
             {% endfor %}
 
             <main class="mt-5">
