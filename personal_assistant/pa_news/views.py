@@ -27,6 +27,78 @@ def scrape_general_news():
 
     return headlines
 
+def scrape_currency():
+    url = "https://finance.i.ua/"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Заголовок
+        header = soup.find('h2').text.strip()
+        
+        # Список для зберігання курсів валют
+        currency_rates = []
+
+        # Знаходимо таблицю з курсами
+        table = soup.find('table')  # Знаходимо таблицю (можливо, вам потрібно буде вказати точніший селектор)
+
+        if table:
+            rows = table.find('tbody').find_all('tr')  # Збираємо всі рядки в таблиці
+
+            for row in rows:
+                # Збираємо дані з кожного рядка
+                currency = row.find('th').text.strip()
+                buy = row.find_all('td')[0].find('span').find('span').text.strip()  # Купівля
+                sell = row.find_all('td')[1].find('span').find('span').text.strip()  # Продаж
+                nbu = row.find_all('td')[2].find('span').find('span').text.strip()  # НБУ
+
+                # Додаємо дані до списку
+                currency_rates.append({
+                    'currency': currency,
+                    'buy': buy,
+                    'sell': sell,
+                    'nbu': nbu
+                })
+
+        return {
+            'header': header,
+            'rates': currency_rates
+        }
+    else:
+        return {
+            'header': 'Не вдалося отримати курс валют',
+            'rates': []
+        }  # Обробка помилки
+
+def scrape_currency_2():
+    url = "https://finance.i.ua/"  # Замініть на URL, з якого будете отримувати другий набір курсів
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+       # Знаходимо заголовок
+    title = soup.find('h2', text='Курс валют банків в Україні').text
+
+    # Знаходимо таблицю курсів валют
+    rates_table = soup.find('tbody', class_='bank_rates_usd')
+
+    rates = []
+    # Ітеруємо через всі рядки в таблиці
+    for row in rates_table.find_all('tr'):
+        bank_name = row.find('th', class_='td-title').text.strip()
+        buy_rate = row.find('td', class_='buy_rate').span.text.strip()
+        sell_rate = row.find('td', class_='sell_rate').span.text.strip()
+        
+        rates.append({
+            'currency': bank_name,
+            'buy': buy_rate,
+            'sell': sell_rate,
+        })
+
+    return title, rates
+
 def display_news(request):
     context = {}
 
@@ -38,8 +110,13 @@ def display_news(request):
         elif category == 'weather':
             context['headlines'] = [{'title': 'Погода: Заглушка', 'time': '', 'link': '#'}]  # Заглушка для погоди
         elif category == 'currency':
-            context['headlines'] = [{'title': 'Курс валют: Заглушка', 'time': '', 'link': '#'}]  # Заглушка для курсу валют
+            currency_data = scrape_currency()
+            context['header'] = currency_data['header']
+            context['rates'] = currency_data['rates']
+            # Викликаємо scrape_currency_2 і додаємо результати до контексту
+            
+            header_2, rates_2 = scrape_currency_2()
+            context['header_2'] = header_2
+            context['rates_2'] = rates_2
 
     return render(request, 'pa_news/news_summary.html', context)
-
-
