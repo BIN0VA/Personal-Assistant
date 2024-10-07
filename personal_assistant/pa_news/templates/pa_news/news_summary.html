@@ -7,7 +7,8 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <select name="category">
+    <select name="category" required>
+        <option value="" selected disabled>Оберіть категорію</option>
         <option value="general_news">Загальні новини</option>
         <option value="weather">Погода</option>
         <option value="currency">Курс валют</option>
