@@ -41,3 +41,5 @@ def display_news(request):
             context['headlines'] = [{'title': 'Курс валют: Заглушка', 'time': '', 'link': '#'}]  # Заглушка для курсу валют
 
     return render(request, 'pa_news/news_summary.html', context)
+
+
