@@ -1,0 +1,17 @@
+{% extends 'pa_user/reset/begin.html' %}
+
+{% block fields %}
+    <div class="form-floating mb-3">
+        {{ form.new_password1 }}
+
+        <label for="password">New password</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        {{ form.new_password2 }}
+
+        <label for="repeat-password2">Repeat new password</label>
+    </div>
+{% endblock %}
+
+{% block button %}Save new password{% endblock %}

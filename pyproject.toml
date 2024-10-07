@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "personal-assistant"
-version = "0.1.0"
-description = ""
+version = "0.3.0"
+description = "It assists you in organizing the phone book, creating notes, and more."
 authors = [
     "Oleksandr Horbatiuk <oleksandr.v.horbatiuk@gmail.com>",
 ]
@@ -11,6 +11,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "^5.1.1"
+django-environ = "^0.11.2"
 
 
 [build-system]
