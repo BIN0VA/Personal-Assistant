@@ -7,7 +7,7 @@ It assists you in organizing the phone book, creating notes, and more.
 ```bash
 $ git clone git@github.com:BIN0VA/Personal-Assistant.git
 $ cd Personal-Assistant
-$ poetry export --without-hashes --format=requirements.txt > requirements.txt
+$ poetry export --without-hashes --format=requirements.txt > personal_assistant/requirements.txt
 $ django-admin startproject personal_assistant
 $ cd personal_assistant
 $ python manage.py startapp pa_core

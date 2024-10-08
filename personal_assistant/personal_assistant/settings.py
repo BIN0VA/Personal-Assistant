@@ -19,7 +19,11 @@ from environ import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = Env(DEBUG=(bool, False))
+env = Env(
+    DEBUG=(bool, False),
+    DJANGO_ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1', '[::1]']),
+)
+
 Env.read_env(BASE_DIR / '..' / '.env')
 
 # Quick-start development settings - unsuitable for production
@@ -31,7 +35,7 @@ SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(env('DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS')
 
 
 # Application definition
@@ -50,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -94,18 +99,13 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': f'django.contrib.auth.password_validation.{name}'}
+    for name in (
+        'UserAttributeSimilarityValidator',
+        'MinimumLengthValidator',
+        'CommonPasswordValidator',
+        'NumericPasswordValidator',
+    )
 ]
 
 
@@ -126,6 +126,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
