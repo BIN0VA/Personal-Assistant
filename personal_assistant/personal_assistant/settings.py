@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pa_core',
-    'contacts', #Додав свій застосунок contacts 
+    'pa_contacts', #Додав застосунок для контактів
     'pa_user',
     'pa_news', # застосунок по новинам
 ]

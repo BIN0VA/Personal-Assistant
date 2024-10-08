@@ -1,44 +1,44 @@
-{% extends "pa_core/home.html" %} {% block title%}
+{% extends "pa_core/form.html" %} 
+
+{% block title%}
     Create contact
 {% endblock %}
 
-{% block content %}
 
-<form method="POST" action="{% url 'contacts:add_contact' %}">
-    {% csrf_token %}
+{% block form %}
     <div style="padding: 10px">
-        <label> Contact name:
+        <label> Name:
             {{ form.name }}
         </label>
         <span>{{ form.errors.name }}</span>
     </div>
     <div style="padding: 10px">
-        <label> Contact address:
+        <label> Address:
             {{ form.address }}
         </label>
         <span>{{ form.errors.address }}</span>
     </div>
     <div style="padding: 10px">
-        <label> Contact phone number:
+        <label> Phone number:
             {{ form.phone}}
         </label>
         <span>{{ form.errors.phone }}</span>
     </div>
     <div style="padding: 10px">
-        <label> Contact email:
+        <label> E-mail:
             {{ form.email }}
         </label>
         <span>{{ form.errors.email }}</span>
     </div>
     <div style="padding: 10px">
-        <label> Contact birthday:
+        <label> Birthday:
             {{ form.birthday }}
         </label>
         <span>{{ form.errors.birthday }}</span>
     </div>
-    <div class="grid">
-        <button type="submit" class="btn btn-success">Submit</button>
-        <button type="reset" class="btn btn-secondary">Reset</button>
-    </div>
-</form>
 {% endblock %}
+{% block button %}
+    Add Contact
+{% endblock %}
+
+
