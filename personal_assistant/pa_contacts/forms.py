@@ -4,6 +4,7 @@ from .models import Contact
 
 import datetime
 
+
 class ContactsForm(ModelForm):
     current_year = datetime.datetime.now().year
     name = CharField(
@@ -37,4 +38,3 @@ class ContactsForm(ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'address', 'phone', 'email', 'birthday']
-        
