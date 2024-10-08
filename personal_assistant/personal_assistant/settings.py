@@ -145,6 +145,9 @@ MESSAGE_TAGS = {
 
 LOGIN_URL = reverse_lazy('pa_user:login')
 
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
 EMAIL_HOST = env('DJANGO_EMAIL_HOST')
 EMAIL_PORT = env('DJANGO_EMAIL_PORT')
 EMAIL_HOST_USER = env('DJANGO_EMAIL_USER')
