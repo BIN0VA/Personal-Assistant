@@ -12,6 +12,8 @@ package-mode = false
 python = "^3.12"
 django = "^5.1.1"
 django-environ = "^0.11.2"
+gunicorn = "^23.0.0"
+whitenoise = "^6.7.0"
 
 
 [build-system]
