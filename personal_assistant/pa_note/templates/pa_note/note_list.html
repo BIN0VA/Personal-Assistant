@@ -1,0 +1,19 @@
+{% extends "pa_core/home.html" %}
+
+{% block content %}
+    <h1>List of notes</h1>
+    <a href="{% url 'pa_note:add_note' %}">Add note</a>
+    <ul>
+        {% for note in notes %}
+            <li>
+                {{ note.name }} - {{ note.description }} -
+                {% if note.done %} Done {% else %} Not done {% endif %}
+                <a href="{% url 'pa_note:edit_note' note.id %}">Edit</a> <!-- Ссылка на редактирование -->
+                <form action="{% url 'pa_note:delete_note' note.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

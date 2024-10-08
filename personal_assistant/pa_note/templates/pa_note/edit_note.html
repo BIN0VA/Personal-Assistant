@@ -1,0 +1,11 @@
+{% extends "pa_core/home.html" %}
+
+{% block content %}
+    <h1>Edit note</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save changes</button>
+    </form>
+    <a href="{% url 'pa_note:note' %}">Back to notes list</a>
+{% endblock %}
