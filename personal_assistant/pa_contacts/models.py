@@ -8,4 +8,4 @@ class Contact(models.Model):
     birthday = models.DateField(null=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
