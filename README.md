@@ -13,6 +13,7 @@ $ cd personal_assistant
 $ python manage.py startapp pa_core
 $ python manage.py startapp pa_user
 $ python manage.py makemigrations
+$ python manage.py collectstatic
 ```
 
 ## Deployment
