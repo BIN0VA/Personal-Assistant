@@ -5,7 +5,7 @@ from .models import Contact
 
 def main(request):
     contacts = Contact.objects.all()
-    return render(request, 'contacts/index.html', {"pa_contacts": contacts})
+    return render(request, 'contacts/index.html', {'pa_contacts': contacts})
 
 def create(request):
 
