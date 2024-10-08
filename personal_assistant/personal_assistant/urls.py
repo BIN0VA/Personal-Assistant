@@ -19,7 +19,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('pa_core.urls')),
-    path('', include('contacts.urls')), #Додав файл urls зі свого застосунку contacts
+    # Додав файл urls зі застосунку контактів
+    path('contacts/', include('pa_contacts.urls')), 
     path('user/', include('pa_user.urls')),
     path('admin/', admin.site.urls),
 ]
