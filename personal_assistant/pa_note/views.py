@@ -1,12 +1,10 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Note
-from .forms import NoteForm
 from django.views import View
 
+from .forms import NoteForm
+from .models import Note
 
-def main(request):
-    return render(request, 'pa_core/home.html')
 
 
 def note(request):
@@ -34,12 +32,12 @@ class NoteDeleteView(View):
         return redirect('pa_note:note')
 
 
-
 class NoteUpdateView(View):
     def get(self, request, pk):
         note = get_object_or_404(Note, pk=pk)
         form = NoteForm(instance=note)
         return render(request, 'pa_note/edit_note.html', {'form': form, 'note': note})
+
 
     def post(self, request, pk):
         note = get_object_or_404(Note, pk=pk)

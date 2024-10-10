@@ -22,6 +22,5 @@ urlpatterns = [
     path('', include('pa_core.urls')),
     path('user/', include('pa_user.urls')),
     path('note/', include('pa_note.urls')),
-    path('detail/<int:note_id>', include('pa_note.urls')),
     path('admin/', admin.site.urls),
 ]
