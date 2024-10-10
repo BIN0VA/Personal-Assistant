@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.db.models.functions import ExtractMonth, ExtractDay
-from datetime import timedelta, date
 
 
 from .forms import ContactsForm
@@ -42,7 +41,10 @@ def main(request):
             birth_month = contact.birth_month
             birth_day = contact.birth_day
 
-            if (birth_month < today.month) or (birth_month == today.month and birth_day < today.day):
+            if (
+                birth_month < today.month or 
+                (birth_month == today.month and birth_day < today.day)
+            ):
                 birthday_this_year = contact.birthday.replace(year=today.year + 1)
             else:
                 birthday_this_year = contact.birthday.replace(year=today.year)
