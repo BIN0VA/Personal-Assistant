@@ -92,54 +92,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                  </div>
-<!--
-                <div class="col-md-3">
-                    <h4 class="text-center">Upcoming birthdays</h4>
-                    <div 
-                        class="btn-group mb-3 w-100" 
-                        role="group" 
-                        aria-label="Birthday filters" 
-                    >
-                        <a 
-                            href="?days=7" 
-                            class="btn btn-primary {% if days == 7 %}active{% endif %}"
-                        >
-                            7 days
-                        </a>
-                        <a 
-                            href="?days=30" 
-                            class="btn btn-primary {% if days == 30 %}active{% endif %}"
-                        >
-                            30 days
-                        </a>
-                        <a 
-                            href="?days=90" 
-                            class="btn btn-primary {% if days == 90 %}active{% endif %}"
-                        >
-                            90 days
-                        </a>
-                    </div>
-                    <div 
-                        class="list-group d-flex" 
-                        style="max-height: 200px; overflow-y: auto; width: 100%;"
-                    >
-                        {% for contact in upcoming_birthdays %}
-                            
-                            <a 
-                                href="#contact-{{ contact.id }}" 
-                                class="list-group-item list-group-item-action"
-                            >
-                                <i class="bi bi-cake2-fill"></i>   {{ contact.name }} - {{ contact.birthday|date:"F j" }}
-                            </a>
-                        {% empty %}
-                            <div class="alert alert-warning" role="alert">
-                                No upcoming birthdays!
-                            </div>
-                        {% endfor %}
-                    </div>
                 </div>
--->
             </div>
         </div>
     {% else %}
