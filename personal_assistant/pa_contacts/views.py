@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.db.models import Q
 from django.db.models.functions import ExtractMonth, ExtractDay
+from datetime import timedelta, date
 
 
 from .forms import ContactsForm
@@ -11,34 +11,53 @@ from .models import Contact
 def main(request):
     contacts = Contact.objects.all()
     today = timezone.now().date()
-    days = int(request.GET.get('days', 7))
-    current_month = today.month
-    current_day = today.day
+    days_param = request.GET.get('days', 7)
+
+    tabs = [
+        (7, 'Week'),
+        (30, 'Month'),
+        (90, '3 months'),
+    ]
+
+    try:
+        days = int(days_param)
+        if days <= 0:
+            days = 7
+    except ValueError:
+        days = 7
+
+    end_date = today + timezone.timedelta(days=days)
+
+    upcoming_birthdays_filtered = []
 
     upcoming_birthdays = (
         Contact.objects.annotate(
             birth_month=ExtractMonth('birthday'),
             birth_day=ExtractDay('birthday')
         )
-        .filter(
-            Q(birth_month=current_month, birth_day__gte=current_day) |
-            Q(birth_month__gt=current_month)
-        )
-        .order_by('birth_month', 'birth_day')
     )
 
-    upcoming_birthdays_filtered = []
     for contact in upcoming_birthdays:
-        birthday_this_year = contact.birthday.replace(year=today.year)
-        days_until_birthday = (birthday_this_year - today).days
+        if contact.birthday:
+            birth_month = contact.birth_month
+            birth_day = contact.birth_day
 
-        if 0 <= days_until_birthday <= days:
-            upcoming_birthdays_filtered.append(contact)
+            if (birth_month < today.month) or (birth_month == today.month and birth_day < today.day):
+                birthday_this_year = contact.birthday.replace(year=today.year + 1)
+            else:
+                birthday_this_year = contact.birthday.replace(year=today.year)
+
+            if today <= birthday_this_year <= end_date:
+                upcoming_birthdays_filtered.append((birthday_this_year, contact))
+
+    upcoming_birthdays_filtered.sort(key=lambda x: x[0])
+    sorted_contacts = [contact for _, contact in upcoming_birthdays_filtered]
 
     return render(request, 'contacts/index.html', {
-        'pa_contacts': contacts,
-        'upcoming_birthdays': upcoming_birthdays_filtered,
+        'contacts': contacts,
+        'upcoming_birthdays': sorted_contacts,
         'days': days,
+        'tabs': tabs,
     })
 
 

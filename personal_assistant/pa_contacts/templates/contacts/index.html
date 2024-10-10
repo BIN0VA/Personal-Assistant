@@ -13,12 +13,12 @@
     >
         <i class="bi bi-person-fill-add"></i> Create
     </a>
-    {% if pa_contacts %}
+    {% if contacts %}
         <div class="container md-4">
             <div class="row">
                 <div class="col-md-9">
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                        {% for contact in pa_contacts %}
+                        {% for contact in contacts %}
                             <div class="col" id="contact-{{ contact.id }}">
                                 <div class="card shadow-sm">
                                     <div class="card-body">
@@ -58,14 +58,48 @@
                         {% endfor %}
                     </div>
                 </div>
-
+                
+                <div class="card text-center col-md-3 h-25">
+                    <div class="card-header">
+                        <h5 class="text-center">
+                            <i class="bi bi-cake2-fill"></i> Upcoming birthdays
+                        </h5>
+                        <ul class="nav nav-tabs card-header-tabs nav-fill">
+                            {% for days_value, text in tabs %}
+                                <li class="nav-item">
+                                    <a 
+                                        href="?days={{ days_value }}" 
+                                        class="nav-link {% if days == days_value %}active{% endif %}"
+                                        title="Next {{ days_value }} days"
+                                    >
+                                        {{ text }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="card-body list-group">
+                        {% for contact in upcoming_birthdays %}
+                            <a 
+                                href="#contact-{{ contact.id }}" 
+                                class="list-group-item list-group-item-action"
+                            >
+                                {{ contact.name }} - {{ contact.birthday|date:"F j" }}
+                            </a>
+                        {% empty %}
+                            <div class="alert alert-warning" role="alert">
+                                No upcoming birthdays!
+                            </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+<!--
                 <div class="col-md-3">
                     <h4 class="text-center">Upcoming birthdays</h4>
                     <div 
-                        class="btn-group mb-3 d-flex" 
+                        class="btn-group mb-3 w-100" 
                         role="group" 
                         aria-label="Birthday filters" 
-                        style="width: 100%;"
                     >
                         <a 
                             href="?days=7" 
@@ -77,7 +111,7 @@
                             href="?days=30" 
                             class="btn btn-primary {% if days == 30 %}active{% endif %}"
                         >
-                        30 days
+                            30 days
                         </a>
                         <a 
                             href="?days=90" 
@@ -105,6 +139,7 @@
                         {% endfor %}
                     </div>
                 </div>
+-->
             </div>
         </div>
     {% else %}
