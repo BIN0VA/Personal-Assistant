@@ -97,7 +97,7 @@ DATABASES = {
             loads(env(name)) if name == 'DATABASE_OPTIONS' else env(name)
             for name in environment
             if name != 'DATABASE_TAG' and name.startswith('DATABASE_')
-        }
+        },
     }
 }
 
