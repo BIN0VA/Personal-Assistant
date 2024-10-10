@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from json import loads
+from os import environ as environment
 from pathlib import Path
 
 from django.contrib.messages import constants as messages
@@ -19,11 +21,7 @@ from environ import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = Env(
-    DEBUG=(bool, False),
-    DJANGO_ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1', '[::1]']),
-)
-
+env = Env()
 Env.read_env(BASE_DIR / '..' / '.env')
 
 # Quick-start development settings - unsuitable for production
@@ -33,9 +31,12 @@ Env.read_env(BASE_DIR / '..' / '.env')
 SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(env('DJANGO_DEBUG'))
+DEBUG = bool(env('DJANGO_DEBUG', default=False))
 
-ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS')
+ALLOWED_HOSTS = env(
+    'DJANGO_ALLOWED_HOSTS',
+    default=['localhost', '127.0.0.1', '[::1]'],
+)
 
 
 # Application definition
@@ -90,6 +91,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        **{
+            name.removeprefix('DATABASE_'):
+            loads(env(name)) if name == 'DATABASE_OPTIONS' else env(name)
+            for name in environment
+            if name != 'DATABASE_TAG' and name.startswith('DATABASE_')
+        }
     }
 }
 
