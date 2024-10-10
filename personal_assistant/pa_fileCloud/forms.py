@@ -3,5 +3,5 @@ from .models import PaUploadedFile
 
 class PaFileUploadForm(forms.ModelForm):
     class Meta:
-        model = UploadedFile
+        model = PaUploadedFile
         fields = ['file', 'category']  # Користувач не вказується, він буде прив'язаний у views.py
