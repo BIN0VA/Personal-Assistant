@@ -30,6 +30,7 @@ class DeleteView(View):
         return redirect('pa_note:note')
 
 
+
 class UpdateView(View):
     def get(self, request, pk):
         note = get_object_or_404(Note, pk=pk)
