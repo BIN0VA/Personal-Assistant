@@ -107,8 +107,6 @@ def display_news(request):
 
         if category == 'general_news':
             context['headlines'] = scrape_general_news()
-        elif category == 'weather':
-            context['headlines'] = [{'title': 'Погода: Заглушка', 'time': '', 'link': '#'}]  # Заглушка для погоди
         elif category == 'currency':
             currency_data = scrape_currency()
             context['header'] = currency_data['header']
