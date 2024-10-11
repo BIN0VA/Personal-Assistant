@@ -1,0 +1,11 @@
+{% extends "pa_core/home.html" %}
+
+{% block content %}
+    <h1>Delete note/h1>
+    <p>Are you sure you want to delete note "{{ note.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+    <a href="{% url 'pa_note:note' %}">Back to notes list</a>
+{% endblock %}

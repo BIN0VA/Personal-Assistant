@@ -10,8 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from json import loads
-from os import environ as environment
 from pathlib import Path
 
 from django.contrib.messages import constants as messages
@@ -21,7 +19,7 @@ from environ import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = Env()
+env = Env(DEBUG=(bool, False))
 Env.read_env(BASE_DIR / '..' / '.env')
 
 # Quick-start development settings - unsuitable for production
@@ -31,12 +29,9 @@ Env.read_env(BASE_DIR / '..' / '.env')
 SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(env('DJANGO_DEBUG', default=False))
+DEBUG = bool(env('DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = env(
-    'DJANGO_ALLOWED_HOSTS',
-    default=['localhost', '127.0.0.1', '[::1]'],
-)
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -50,12 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pa_core',
     'pa_user',
-    'pa_contacts', #Додав застосунок для контактів
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,12 +85,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        **{
-            name.removeprefix('DATABASE_'):
-            loads(env(name)) if name == 'DATABASE_OPTIONS' else env(name)
-            for name in environment
-            if name != 'DATABASE_TAG' and name.startswith('DATABASE_')
-        },
     }
 }
 
@@ -106,13 +93,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': f'django.contrib.auth.password_validation.{name}'}
-    for name in (
-        'UserAttributeSimilarityValidator',
-        'MinimumLengthValidator',
-        'CommonPasswordValidator',
-        'NumericPasswordValidator',
-    )
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 
@@ -132,8 +124,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -154,9 +144,6 @@ MESSAGE_TAGS = {
 }
 
 LOGIN_URL = reverse_lazy('pa_user:login')
-
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
 
 EMAIL_HOST = env('DJANGO_EMAIL_HOST')
 EMAIL_PORT = env('DJANGO_EMAIL_PORT')
