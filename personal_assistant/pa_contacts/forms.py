@@ -26,7 +26,10 @@ class ContactsForm(ModelForm):
         min_length=10, 
         max_length=20, 
         required=True, 
-        widget=TextInput(attrs={'class': 'form-control'})
+        widget=TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': '+380776665544',
+        })
     )
     email = EmailField(
         min_length=5, 
@@ -37,6 +40,7 @@ class ContactsForm(ModelForm):
             'type': 'email',  
             'id': 'email', 
             'name': 'email',
+            'placeholder': 'example@example.com',
         })
     )
     birthday = DateField(
@@ -69,13 +73,17 @@ class ContactsForm(ModelForm):
                     parsed_phone = parse(phone, 'UA')
 
                 if not is_valid_number(parsed_phone):
-                    raise ValidationError('Please enter a valid phone number.')
+                    raise ValidationError(
+                        'Please enter your phone number in the international format (e.g., +380776665544).'
+                    )
 
 
                 formatted_phone = format_number(parsed_phone, PhoneNumberFormat.E164)
                 return formatted_phone
 
             except NumberParseException as e:
-                raise ValidationError('Please enter a valid phone number.')
+                raise ValidationError(
+                    'Please enter your phone number in the international format (e.g., +380776665544).'
+                )
 
         return phone
