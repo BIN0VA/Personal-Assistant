@@ -1,44 +1,54 @@
 {% extends "pa_core/form.html" %} 
 
-{% block title%}
+{% block title %}
     Create contact
 {% endblock %}
 
-
 {% block form %}
-    <div style="padding: 10px">
+    <div class="mb-3">
         <label> Name:
             {{ form.name }}
         </label>
-        <span>{{ form.errors.name }}</span>
+        {% if form.errors.name %}
+            <div class="invalid-feedback d-block">{{ form.errors.name.0 }}</div>
+        {% endif %}
     </div>
-    <div style="padding: 10px">
+    <div class="mb-3">
         <label> Address:
             {{ form.address }}
         </label>
-        <span>{{ form.errors.address }}</span>
+        {% if form.errors.address %}
+            <div class="invalid-feedback d-block">{{ form.errors.address }}</div>
+        {% endif %}
     </div>
-    <div style="padding: 10px">
+    <div class="mb-3">
         <label> Phone number:
-            {{ form.phone}}
+            {{ form.phone }}
         </label>
-        <span>{{ form.errors.phone }}</span>
+        {% if form.errors.phone %}
+            <div class="invalid-feedback d-block">{{ form.errors.phone.0 }}</div>
+        {% endif %}
     </div>
-    <div style="padding: 10px">
-        <label> E-mail:
+    <div class="mb-3">
+        <label for="email" class="form-label"> E-mail: 
             {{ form.email }}
         </label>
-        <span>{{ form.errors.email }}</span>
+        {% for error in form.email.errors %}
+            <div class="invalid-feedback d-block"> {{ error }} </div>
+        {% endfor %}
     </div>
-    <div style="padding: 10px">
+    <div class="mb-3">
         <label> Birthday:
             {{ form.birthday }}
         </label>
-        <span>{{ form.errors.birthday }}</span>
+        {% if form.errors.birthday %}
+            <div class="invalid-feedback d-block">{{ form.errors.birthday.0 }}</div>
+        {% endif %}
     </div>
 {% endblock %}
+
 {% block button %}
     Add Contact
 {% endblock %}
-
-
+{% block footer %}
+{% endblock %}

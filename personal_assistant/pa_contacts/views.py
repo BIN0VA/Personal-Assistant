@@ -66,13 +66,16 @@ def main(request):
 def create(request):
 
     if request.method == 'POST':
+        print('POST request received')
         form = ContactsForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect(to='pa_contacts:main')
         else:
+            print('Form errors:', form.errors)
             return render(request, 'contacts/add_contact.html', {'form': form})
-
+    
+    print('GET request received')
     return render(request, 'contacts/add_contact.html', {'form': ContactsForm()})
 
 
