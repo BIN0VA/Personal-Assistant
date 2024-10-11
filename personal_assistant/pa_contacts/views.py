@@ -1,8 +1,8 @@
+from django.db.models.functions import ExtractMonth, ExtractDay
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.db.models.functions import ExtractMonth, ExtractDay
 
-
+from pa_core.views import overview
 from .forms import ContactsForm
 from .models import Contact
 
@@ -42,7 +42,7 @@ def main(request):
             birth_day = contact.birth_day
 
             if (
-                birth_month < today.month or 
+                birth_month < today.month or
                 (birth_month == today.month and birth_day < today.day)
             ):
                 birthday_this_year = contact.birthday.replace(year=today.year + 1)
@@ -55,12 +55,17 @@ def main(request):
     upcoming_birthdays_filtered.sort(key=lambda x: x[0])
     sorted_contacts = [contact for _, contact in upcoming_birthdays_filtered]
 
-    return render(request, 'contacts/index.html', {
-        'contacts': contacts,
-        'upcoming_birthdays': sorted_contacts,
-        'days': days,
-        'tabs': tabs,
-    })
+    return overview(
+        request,
+        'contacts',
+        contacts,
+        {
+            'upcoming_birthdays': sorted_contacts,
+            'days': days,
+            'tabs': tabs,
+        },
+        'Contacts',
+    )
 
 
 def create(request):
@@ -71,9 +76,9 @@ def create(request):
             form.save()
             return redirect(to='pa_contacts:main')
         else:
-            return render(request, 'contacts/add_contact.html', {'form': form})
+            return render(request, 'pa_contacts/add_contact.html', {'form': form})
 
-    return render(request, 'contacts/add_contact.html', {'form': ContactsForm()})
+    return render(request, 'pa_contacts/add_contact.html', {'form': ContactsForm()})
 
 
 def delete(request, contact_id):
