@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (
     LoginView,
     PasswordResetConfirmView,
-    PasswordResetView
+    PasswordResetView,
 )
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.handlers.wsgi import WSGIRequest
@@ -14,10 +14,12 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 
+from pa_core.views import FormView
 from .forms import (
     PaUserAuthenticationForm,
+    PaUserCreationForm,
     PaUserPasswordResetForm,
-    PaUserSetPasswordForm
+    PaUserSetPasswordForm,
 )
 
 
@@ -25,6 +27,13 @@ class PaUserLoginView(LoginView):
     template_name = 'pa_user/login.html'
     form_class = PaUserAuthenticationForm
     redirect_authenticated_user = True
+
+
+class RegisterView(FormView):
+    form_class = PaUserCreationForm
+
+    def _guest(self) -> bool:
+        return False
 
 
 class PaUserPasswordResetViewBase(ABC, SuccessMessageMixin):
