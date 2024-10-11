@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from django.contrib.messages import constants as messages
@@ -31,7 +32,7 @@ SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(env('DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pa_core',
     'pa_user',
+    'pa_note',
+    'pa_contacts'
 ]
 
 MIDDLEWARE = [
