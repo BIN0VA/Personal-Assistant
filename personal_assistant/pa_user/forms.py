@@ -27,7 +27,7 @@ class PaUserAuthenticationForm(AuthenticationForm):
 
     password = CharField(
         required=True,
-        widget=PasswordInput(FormHelper.attributes('password', 'Password')),
+        widget=PasswordInput(FormHelper.attributes('password', '****')),
     )
 
     def __init__(self, *args: tuple, **kwargs: dict) -> None:
@@ -42,7 +42,7 @@ class PaUserAuthenticationForm(AuthenticationForm):
 
 class PaUserCreationForm(UserCreationForm):
     username = CharField(
-        widget=TextInput(FormHelper.attributes('username')),
+        widget=TextInput(FormHelper.attributes('username', 'Nickname')),
         **USERNAME,
     )
 
@@ -50,17 +50,17 @@ class PaUserCreationForm(UserCreationForm):
         min_length=7,
         max_length=40,
         required=True,
-        widget=EmailInput(FormHelper.attributes('email')),
+        widget=EmailInput(FormHelper.attributes('email', 'me@example.com')),
     )
 
     password1 = CharField(
         required=True,
-        widget=PasswordInput(FormHelper.attributes('password')),
+        widget=PasswordInput(FormHelper.attributes('password', '****')),
     )
 
     password2 = CharField(
         required=True,
-        widget=PasswordInput(FormHelper.attributes('confirm-password')),
+        widget=PasswordInput(FormHelper.attributes('repeat-password', '****')),
     )
 
     def __init__(self, *args: tuple, **kwargs: dict) -> None:

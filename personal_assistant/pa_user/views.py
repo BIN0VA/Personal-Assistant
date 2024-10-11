@@ -29,7 +29,8 @@ class PaUserLoginView(LoginView):
     redirect_authenticated_user = True
 
 
-class RegisterView(FormView):
+class PaUserCreationView(FormView):
+    template_name = 'pa_user/register.html'
     form_class = PaUserCreationForm
 
     def _guest(self) -> bool:

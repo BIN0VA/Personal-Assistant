@@ -31,7 +31,7 @@ class FormView(ABC, View):
 
     def dispatch(self, request: WSGIRequest) -> Response:
         if request.user.is_anonymous == self._guest():
-            return redirect('fpq_core:index')
+            return redirect('pa_core:home')
 
         return super().dispatch(request)
 
@@ -48,7 +48,7 @@ class FormView(ABC, View):
         if form.is_valid():
             self._save(request.POST, form)
 
-            return redirect('fpq_core:index')
+            return redirect('pa_core:home')
 
         return render(
             request,
