@@ -1,0 +1,44 @@
+{% extends "pa_core/form.html" %} 
+
+{% block title%}
+    Create contact
+{% endblock %}
+
+
+{% block form %}
+    <div style="padding: 10px">
+        <label> Name:
+            {{ form.name }}
+        </label>
+        <span>{{ form.errors.name }}</span>
+    </div>
+    <div style="padding: 10px">
+        <label> Address:
+            {{ form.address }}
+        </label>
+        <span>{{ form.errors.address }}</span>
+    </div>
+    <div style="padding: 10px">
+        <label> Phone number:
+            {{ form.phone}}
+        </label>
+        <span>{{ form.errors.phone }}</span>
+    </div>
+    <div style="padding: 10px">
+        <label> E-mail:
+            {{ form.email }}
+        </label>
+        <span>{{ form.errors.email }}</span>
+    </div>
+    <div style="padding: 10px">
+        <label> Birthday:
+            {{ form.birthday }}
+        </label>
+        <span>{{ form.errors.birthday }}</span>
+    </div>
+{% endblock %}
+{% block button %}
+    Add Contact
+{% endblock %}
+
+
