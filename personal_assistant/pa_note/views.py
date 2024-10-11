@@ -1,3 +1,5 @@
+from django.contrib.postgres.search import SearchVector
+from django.db import connection
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
@@ -7,7 +9,18 @@ from .models import Note
 
 
 def note(request):
-    return overview(request, 'note', Note.objects.all())
+    items = Note.objects
+
+    if query := request.GET.get('search'):
+        if connection.vendor == 'postgresql':
+            items = items.annotate(search=SearchVector('name')) \
+                .filter(search=query)
+        else:
+            items = items.filter(name__icontains=query)
+    else:
+        items = items.all()
+
+    return overview(request, 'note', items)
 
 
 class CreateView(View):
