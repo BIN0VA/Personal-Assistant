@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from json import loads
 from os import environ as environment
-
 from pathlib import Path
 
 from django.contrib.messages import constants as messages
@@ -71,7 +70,7 @@ ROOT_URLCONF = 'personal_assistant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
