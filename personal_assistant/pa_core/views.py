@@ -6,6 +6,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.forms import ModelForm
 from django.http import HttpResponse, HttpResponsePermanentRedirect, QueryDict
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views import View
 
 
@@ -59,3 +60,22 @@ class FormView(ABC, View):
 @login_required
 def home(request: WSGIRequest) -> HttpResponse:
     return render(request, 'pa_core/home.html')
+
+
+def overview(
+    request: WSGIRequest,
+    entity: str,
+    items: str,
+    context: dict = {},
+    title: str = None
+) -> HttpResponse:
+    return render(
+        request,
+        f'pa_{entity}/overview.html',
+        {
+            'title': title or f'{entity.title()}s',
+            'url': reverse(f'pa_{entity}:create'),
+            'items': items,
+            **context,
+        },
+    )
