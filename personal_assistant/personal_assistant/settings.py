@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pa_core',
     'pa_user',
-    'pa_contacts', #Додав застосунок для контактів
+    'pa_contacts',
+    'pa_note',
 ]
 
 MIDDLEWARE = [
