@@ -47,6 +47,7 @@ class ContactsForm(ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'address', 'phone', 'email', 'birthday']
+        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
