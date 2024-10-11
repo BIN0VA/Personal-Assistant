@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.db import connection
+from django.contrib.postgres.search import SearchVector
 
 from pa_core.views import overview
 from .forms import NoteForm
@@ -59,3 +61,19 @@ class DoneUpdateView(View):
         note.done = True
         note.save()
         return redirect('pa_note:note')
+
+
+def universal_notes_search(query):
+    if connection.vendor =='postgresql':
+        return Note.objects.annotate(search=SearchVector('name', 'description')).filter(search=query)
+    else:
+        return Note.objects.filter(name__icontains=query) | Note.objects.filter(description__icontains=query)
+
+
+def notes_search(request):
+    query = request.GET.get('q')
+    if query:
+        result = universal_notes_search(query)
+    else:
+        result = Note.objects.all()
+    return render(request, 'pa_note/note_list.html', {'notes': result})
