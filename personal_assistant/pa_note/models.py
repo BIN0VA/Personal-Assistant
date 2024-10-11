@@ -1,11 +1,11 @@
-from django.db import models
+from django.db.models import BooleanField, CharField, DateTimeField, Model
 
-class Note(models.Model):
-    name = models.CharField(max_length=50, null=False)
-    description = models.CharField(max_length=150, null=True)
-    done = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
 
+class Note(Model):
+    name = CharField(max_length=50, null=False)
+    description = CharField(max_length=150, null=True)
+    done = BooleanField(default=False)
+    created = DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

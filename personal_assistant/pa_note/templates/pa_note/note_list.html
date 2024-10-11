@@ -12,13 +12,23 @@
                     Done
                 {% else %}
                     Not done
-                    <form action="{% url 'pa_note:done_note' note.id %}" method="post" style="display:inline;">
+                    <form
+                        action="{% url 'pa_note:done_note' note.id %}"
+                        method="post"
+                        style="display:inline;"
+                    >
                         {% csrf_token %}
                         <button type="submit">Mark as done</button>
                     </form>
                 {% endif %}
                 <a href="{% url 'pa_note:edit_note' note.id %}">Edit</a>
-                <a href="#" onclick="confirmDelete('{% url 'pa_note:delete_note' note.id %}'); return false;">Delete</a>
+
+                <a
+                    href="#"
+                    onclick="confirmDelete('{% url 'pa_note:delete_note' note.id %}'); return false;"
+                >
+                    Delete
+                </a>
             </li>
         {% endfor %}
     </ul>

@@ -2,8 +2,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
-from .forms import NoteForm, NoteDoneForm
+from .forms import NoteForm
 from .models import Note
+
 
 def note(request):
     notes = Note.objects.all()
@@ -30,13 +31,15 @@ class DeleteView(View):
         return redirect('pa_note:note')
 
 
-
 class UpdateView(View):
     def get(self, request, pk):
         note = get_object_or_404(Note, pk=pk)
         form = NoteForm(instance=note)
-        return render(request, 'pa_note/edit_note.html', {'form': form, 'note': note})
-
+        return render(
+            request,
+            'pa_note/edit_note.html',
+            {'form': form, 'note': note},
+        )
 
     def post(self, request, pk):
         note = get_object_or_404(Note, pk=pk)
@@ -44,7 +47,11 @@ class UpdateView(View):
         if form.is_valid():
             form.save()
             return redirect('pa_note:note')
-        return render(request, 'pa_note/edit_note.html', {'form': form, 'note': note})
+        return render(
+            request,
+            'pa_note/edit_note.html',
+            {'form': form, 'note': note},
+        )
 
 
 class DoneUpdateView(View):
