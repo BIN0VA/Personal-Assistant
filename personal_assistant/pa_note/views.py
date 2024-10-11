@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
+from pa_core.views import overview
 from .forms import NoteForm
 from .models import Note
 
 
 def note(request):
-    notes = Note.objects.all()
-    return render(request, 'pa_note/note_list.html', {'notes': notes})
+    return overview(request, 'note', Note.objects.all())
 
 
 class CreateView(View):

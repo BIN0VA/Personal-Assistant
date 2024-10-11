@@ -1,11 +1,8 @@
-{% extends "pa_core/home.html" %}
+{% extends 'pa_core/overview.html' %}
 
-{% block title %}Notes{% endblock %}
-
-{% block content %}
-    <a href="{% url 'pa_note:add_note' %}">Add note</a>
+{% block items %}
     <ul>
-        {% for note in notes %}
+        {% for note in items %}
             <li>
                 {{ note.name }} - {{ note.description }} -
                 {% if note.done %}
