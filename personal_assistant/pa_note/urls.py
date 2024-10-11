@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import CreateView, DeleteView, DoneUpdateView, note, UpdateView
+from .views import (
+    CreateView,
+    DeleteView,
+    DoneUpdateView,
+    note,
+    UpdateView,
+)
 
 app_name = 'pa_note'
 
