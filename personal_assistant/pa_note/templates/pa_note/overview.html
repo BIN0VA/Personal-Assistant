@@ -1,21 +1,6 @@
-% extends 'pa_core/overview.html' %}
-
-{% block title %}Notes{% endblock %}
+{% extends 'pa_core/overview.html' %}
 
 {% block items %}
-    <meta name="csrf-token" content="{{ csrf_token }}">
-
-    <form method="get" action="{% url 'pa_note:search' %}">
-        <input type="text" name="q" placeholder="Search notes..." value="{{ request.GET.q }}">
-        <button type="submit">Search</button>
-        {% if request.GET.q %}
-            <!-- Кнопка для сброса поиска -->
-            <a href="{% url 'pa_note:search' %}">Show all notes</a>
-        {% endif %}
-    </form>
-
-    <a href="{% url 'pa_note:add_note' %}">Add note</a>
-
     <ul>
         {% for note in items %}
             <li>
@@ -44,10 +29,6 @@
             </li>
         {% endfor %}
     </ul>
-
-    {% if items|length == 0 %}
-        <p>Notes not found.</p>
-    {% endif %}
 
     <script>
         function confirmDelete(url) {

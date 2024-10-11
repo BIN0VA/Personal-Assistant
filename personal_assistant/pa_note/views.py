@@ -1,7 +1,7 @@
+from django.contrib.postgres.search import SearchVector
+from django.db import connection
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.db import connection
-from django.contrib.postgres.search import SearchVector
 
 from pa_core.views import overview
 from .forms import NoteForm
@@ -9,7 +9,18 @@ from .models import Note
 
 
 def note(request):
-    return overview(request, 'note', Note.objects.all())
+    items = Note.objects
+
+    if query := request.GET.get('search'):
+        if connection.vendor == 'postgresql':
+            items = items.annotate(search=SearchVector('name')) \
+                .filter(search=query)
+        else:
+            items = items.filter(name__icontains=query)
+    else:
+        items = items.all()
+
+    return overview(request, 'note', items)
 
 
 class CreateView(View):
@@ -61,19 +72,3 @@ class DoneUpdateView(View):
         note.done = True
         note.save()
         return redirect('pa_note:note')
-
-
-def universal_notes_search(query):
-    if connection.vendor =='postgresql':
-        return Note.objects.annotate(search=SearchVector('name', 'description')).filter(search=query)
-    else:
-        return Note.objects.filter(name__icontains=query) | Note.objects.filter(description__icontains=query)
-
-
-def notes_search(request):
-    query = request.GET.get('q')
-    if query:
-        result = universal_notes_search(query)
-    else:
-        result = Note.objects.all()
-    return render(request, 'pa_note/note_list.html', {'notes': result})

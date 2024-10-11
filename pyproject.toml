@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "personal-assistant"
-version = "0.7.0"
+version = "0.8.0"
 description = "It assists you in organizing the phone book, creating notes, and more."
 authors = [
-    "Oleksandr Horbatiuk <oleksandr.v.horbatiuk@gmail.com>",
     "Illia Trubnikov <illyatr25@gmail.com>",
+    "Nataly Sholohova <n.sholohova27@gmail.com>",
+    "Oleksandr Horbatiuk <oleksandr.v.horbatiuk@gmail.com>",
 ]
 readme = "README.md"
 package-mode = false
