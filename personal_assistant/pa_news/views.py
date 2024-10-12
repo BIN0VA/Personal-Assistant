@@ -29,52 +29,39 @@ def scrape_general_news():
     return headlines
 
 
-def scrape_currency():
-    url = "https://finance.i.ua/"
-    response = get(url)
+def scrape_currency() -> dict:
+    # Список для зберігання курсів валют
+    currency_rates = {}
 
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
+    if (response := get('https://finance.i.ua/')).status_code != 200:
+        return currency_rates
 
-        # Заголовок
-        header = soup.find('h2').text.strip()
+    soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Список для зберігання курсів валют
-        currency_rates = []
+    # Знаходимо таблицю з курсами
+    if table := soup.find('table'):
+        # Збираємо всі рядки в таблиці
+        for row in table.find('tbody').find_all('tr'):
+            # Збираємо дані з кожного рядка
+            currency = row.find('th').text.strip()
 
-        # Знаходимо таблицю з курсами
-        # Знаходимо таблицю (можливо, вам потрібно буде вказати точніший
-        # селектор)
-        table = soup.find('table')
+            match currency:
+                case 'USD': icon = 'dollar'
+                case 'EUR': icon = 'euro'
+                case _: icon = None
 
-        if table:
-            # Збираємо всі рядки в таблиці
-            rows = table.find('tbody').find_all('tr')
+            cells = row.find_all('td')
 
-            for row in rows:
-                # Збираємо дані з кожного рядка
-                currency = row.find('th').text.strip()
-                buy = row.find_all('td')[0].find('span').find('span').text.strip()  # Купівля
-                sell = row.find_all('td')[1].find('span').find('span').text.strip()  # Продаж
-                nbu = row.find_all('td')[2].find('span').find('span').text.strip()  # НБУ
+            # Додаємо дані до словника
+            currency_rates[currency] = {
+                'icon': icon,
+                'rates': {
+                    type: cells[delta].find('span').find('span').text.strip()
+                    for delta, type in enumerate(['Buy', 'Sell', 'NBU'])
+                },
+            }
 
-                # Додаємо дані до списку
-                currency_rates.append({
-                    'currency': currency,
-                    'buy': buy,
-                    'sell': sell,
-                    'nbu': nbu,
-                })
-
-        return {
-            'header': header,
-            'rates': currency_rates
-        }
-    else:
-        return {
-            'header': 'Не вдалося отримати курс валют',
-            'rates': []
-        }  # Обробка помилки
+    return currency_rates
 
 
 def scrape_currency_2():

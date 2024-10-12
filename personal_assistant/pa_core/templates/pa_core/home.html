@@ -122,16 +122,35 @@
                     <ul class="list-group list-group-horizontal">
                         {% for name, currency in currencies.items %}
                             <li class="list-group-item list-group-item-light rounded-top-0">
-                                <i class="bi bi-currency-{{ currency.icon }}"></i>
-                                <span class="pe-2">{{ name }}</span>
+                                <i class="bi bi-currency-{% if currency.icon %}{{ currency.icon }}{% else %}exchange{% endif %}"></i>
+                                <span class="pe-2">
+                                    {% if currency.icon %}
+                                        {{ currency.icon|title }} ({{ name }})
+                                    {% else %}
+                                        {{ name }}
+                                    {% endif %}
+                                </span>
 
-                                {% for rate in currency.rates %}
+                                {% for type, rate in currency.rates.items %}
                                     <span class="badge text-bg-secondary rounded-pill">
-                                        {{ rate }}
+                                        <span class="text-white-50">{{ type }}:</span>
+                                        <span>{{ rate }}</span>
                                     </span>
                                 {% endfor %}
                             </li>
                         {% endfor %}
+
+                        {% url 'pa_news:news_summary' as news %}
+
+                        {% if request.path != news %}
+                            <a
+                                href="{{ news }}"
+                                class="list-group-item rounded-top-0"
+                            >
+                                <i class="bi bi-bank"></i>
+                                Banks
+                            </a>
+                        {% endif %}
                     </ul>
                 </div>
             {% endblock %}
