@@ -140,11 +140,11 @@
                             </li>
                         {% endfor %}
 
-                        {% url 'pa_news:news_summary' as news %}
+                        {% url 'pa_news:bank' as bank %}
 
-                        {% if request.path != news %}
+                        {% if request.path != bank %}
                             <a
-                                href="{{ news }}"
+                                href="{{ bank }}"
                                 class="list-group-item rounded-top-0"
                             >
                                 <i class="bi bi-bank"></i>

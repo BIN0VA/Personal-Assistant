@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import display_news
+from .views import bank, recent
 
 app_name = 'pa_news'
 
 urlpatterns = [
-    path('', display_news, name='news_summary'),
+    path('', recent, name='recent'),
+    path('bank/', bank, name='bank'),
 ]

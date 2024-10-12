@@ -1,9 +1,9 @@
-from requests import get
 from bs4 import BeautifulSoup
 from django.shortcuts import render
+from requests import get
 
 
-def scrape_general_news():
+def recent(request):
     url = 'https://ua.korrespondent.net/'
     response = get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -26,90 +26,33 @@ def scrape_general_news():
                 'time': time
             })
 
-    return headlines
+    return render(request, 'pa_news/recent.html', {'headlines': headlines})
 
 
-def scrape_currency() -> dict:
-    # Список для зберігання курсів валют
-    currency_rates = {}
+def bank(request):
+    items = []
 
-    if (response := get('https://finance.i.ua/')).status_code != 200:
-        return currency_rates
-
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    # Знаходимо таблицю з курсами
-    if table := soup.find('table'):
-        # Збираємо всі рядки в таблиці
-        for row in table.find('tbody').find_all('tr'):
-            # Збираємо дані з кожного рядка
-            currency = row.find('th').text.strip()
-
-            match currency:
-                case 'USD': icon = 'dollar'
-                case 'EUR': icon = 'euro'
-                case _: icon = None
-
-            cells = row.find_all('td')
-
-            # Додаємо дані до словника
-            currency_rates[currency] = {
-                'icon': icon,
-                'rates': {
-                    type: cells[delta].find('span').find('span').text.strip()
-                    for delta, type in enumerate(['Buy', 'Sell', 'NBU'])
-                },
-            }
-
-    return currency_rates
-
-
-def scrape_currency_2():
-    # Замініть на URL, з якого будете отримувати другий набір курсів
-    url = "https://finance.i.ua/"
-    response = get(url)
-
-    if response.status_code == 200:
+    if (response := get('https://finance.i.ua/')).status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Знаходимо заголовок
-    title = soup.find('h2', text='Курс валют банків в Україні').text
+        # Знаходимо таблицю курсів валют
+        rates_table = soup.find('tbody', class_='bank_rates_usd')
 
-    # Знаходимо таблицю курсів валют
-    rates_table = soup.find('tbody', class_='bank_rates_usd')
+        # Ітеруємо через всі рядки в таблиці
+        for row in rates_table.find_all('tr'):
+            nodes = [
+                row.find('th', class_='td-title'),
+                row.find('td', class_='buy_rate').span,
+                row.find('td', class_='sell_rate').span,
+            ]
 
-    rates = []
-    # Ітеруємо через всі рядки в таблиці
-    for row in rates_table.find_all('tr'):
-        bank_name = row.find('th', class_='td-title').text.strip()
-        buy_rate = row.find('td', class_='buy_rate').span.text.strip()
-        sell_rate = row.find('td', class_='sell_rate').span.text.strip()
+            items.append([node.text.strip() for node in nodes])
 
-        rates.append({
-            'currency': bank_name,
-            'buy': buy_rate,
-            'sell': sell_rate,
-        })
-
-    return title, rates
-
-
-def display_news(request):
-    context = {}
-
-    if request.method == 'POST':
-        category = request.POST.get('category')
-
-        if category == 'general_news':
-            context['headlines'] = scrape_general_news()
-        elif category == 'currency':
-            currency_data = scrape_currency()
-            context['header'] = currency_data['header']
-            context['rates'] = currency_data['rates']
-            # Викликаємо scrape_currency_2 і додаємо результати до контексту
-
-            header_2, rates_2 = scrape_currency_2()
-            context['header_2'] = header_2
-            context['rates_2'] = rates_2
-
-    return render(request, 'pa_news/news_summary.html', context)
+    return render(
+        request,
+        'pa_news/bank.html',
+        {
+            'title': 'Dollar exchange rate in different banks',
+            'items': items,
+        },
+    )
