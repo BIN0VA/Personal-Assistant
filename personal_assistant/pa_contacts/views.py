@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models.functions import ExtractMonth, ExtractDay
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -7,8 +8,9 @@ from .forms import ContactsForm
 from .models import Contact
 
 
+@login_required
 def main(request):
-    contacts = Contact.objects.all()
+    contacts = Contact.objects.filter(user=request.user)
     today = timezone.now().date()
     days_param = request.GET.get('days', 7)
 
@@ -30,7 +32,7 @@ def main(request):
     upcoming_birthdays_filtered = []
 
     upcoming_birthdays = (
-        Contact.objects.annotate(
+        contacts.annotate(
             birth_month=ExtractMonth('birthday'),
             birth_day=ExtractDay('birthday')
         )
@@ -68,33 +70,37 @@ def main(request):
     )
 
 
+@login_required
 def create(request):
-
     if request.method == 'POST':
-        form = ContactsForm(request.POST)
+        form = ContactsForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
-            return redirect(to='pa_contacts:main')
-        else:
-            return render(request, 'pa_contacts/add_contact.html', {'form': form})
+            contact = form.save(commit=False)
+            contact.user = request.user
+            contact.save()
+            return redirect('pa_contacts:main')
+        return render(request, 'pa_contacts/add_contact.html', {'form': form})
 
     return render(request, 'pa_contacts/add_contact.html', {'form': ContactsForm()})
 
 
+@login_required
 def delete(request, contact_id):
-    Contact.objects.get(pk=contact_id).delete()
+    contact = get_object_or_404(Contact, pk=contact_id, user=request.user)
+    contact.delete()
     return redirect(to='pa_contacts:main')
 
 
+@login_required
 def edit(request, contact_id):
-    contact = get_object_or_404(Contact, id=contact_id)
+    contact = get_object_or_404(Contact, id=contact_id, user=request.user)
     
     if request.method == 'POST':
-        form = ContactsForm(request.POST, instance=contact)
+        form = ContactsForm(request.POST, instance=contact, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('pa_contacts:main')
     else:
-        form = ContactsForm(instance=contact)
+        form = ContactsForm(instance=contact, user=request.user)
     
     return render(request, 'pa_contacts/edit.html', {'form': form})

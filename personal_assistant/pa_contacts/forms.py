@@ -55,6 +55,7 @@ class ContactsForm(ModelForm):
         fields = ['name', 'address', 'phone', 'email', 'birthday']
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         for field in self.fields:
             if self.errors.get(field):
@@ -73,6 +74,9 @@ class ContactsForm(ModelForm):
 
             try:
                 parsed = parse(phone, None if phone.startswith('+') else 'UA')
+                contact_id = self.instance.id if self.instance else None
+                if Contact.objects.filter(user=self.user, phone=phone).exclude(id=contact_id).exists():
+                    raise ValidationError('A contact with this phone number already exists.')
 
                 if not is_valid_number(parsed):
                     raise incorrect
@@ -83,3 +87,12 @@ class ContactsForm(ModelForm):
                 raise incorrect
 
         return phone
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        contact_id = self.instance.id if self.instance else None
+
+        if email and Contact.objects.filter(user=self.user, email=email).exclude(id=contact_id).exists():
+            raise ValidationError("A contact with this e-mail already exists.")
+        
+        return email
