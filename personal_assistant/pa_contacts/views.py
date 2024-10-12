@@ -7,6 +7,7 @@ from pa_core.views import overview
 from .forms import ContactsForm
 from .models import Contact
 
+
 @login_required
 def main(request):
     contacts = Contact.objects.filter(user=request.user)
@@ -31,7 +32,7 @@ def main(request):
     upcoming_birthdays_filtered = []
 
     upcoming_birthdays = (
-        Contact.objects.annotate(
+        contacts.annotate(
             birth_month=ExtractMonth('birthday'),
             birth_day=ExtractDay('birthday')
         )
@@ -71,7 +72,6 @@ def main(request):
 
 @login_required
 def create(request):
-    
     if request.method == 'POST':
         form = ContactsForm(request.POST, user=request.user)
         if form.is_valid():
@@ -86,7 +86,8 @@ def create(request):
 
 @login_required
 def delete(request, contact_id):
-    Contact.objects.get(pk=contact_id).delete()
+    contact = get_object_or_404(Contact, pk=contact_id, user=request.user)
+    contact.delete()
     return redirect(to='pa_contacts:main')
 
 
