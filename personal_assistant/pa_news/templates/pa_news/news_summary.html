@@ -1,99 +1,96 @@
-{% extends "pa_core/home.html" %}
+{% extends 'pa_core/home.html' %}
 
-{% block title %}
-    Актуальні новини
-{% endblock %}
+{% block title %}Актуальні новини{% endblock %}
 
 {% block content %}
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse; /* Зливаючи границі */
-        margin-top: 20px; /* Відступ зверху */
-    }
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Зливаючи границі */
+            margin-top: 20px; /* Відступ зверху */
+        }
 
-    th, td {
-        padding: 12px; /* Відступи всередині комірок */
-        text-align: left; /* Вирівнювання тексту */
-        border: 1px solid #ddd; /* Границя для комірок */
-    }
+        th, td {
+            padding: 12px; /* Відступи всередині комірок */
+            text-align: left; /* Вирівнювання тексту */
+            border: 1px solid #ddd; /* Границя для комірок */
+        }
 
-    th {
-        background-color: #f2f2f2; /* Фон для заголовків */
-        font-weight: bold; /* Жирний шрифт для заголовків */
-    }
+        th {
+            background-color: #f2f2f2; /* Фон для заголовків */
+            font-weight: bold; /* Жирний шрифт для заголовків */
+        }
 
-    tr:hover {
-        background-color: #f5f5f5; /* Підсвічування рядків при наведенні */
-    }
-</style>
+        tr:hover {
+            background-color: #f5f5f5; /* Підсвічування рядків при наведенні */
+        }
+    </style>
 
-<form method="POST">
-    {% csrf_token %}
-    <select name="category" required>
-        <option value="" selected disabled>Оберіть категорію</option>
-        <option value="general_news">Загальні новини</option>
-        <option value="currency">Курс валют</option>
-    </select>
-    <button type="submit">Показати</button>
-</form>
+    <form method="POST">
+        {% csrf_token %}
+        <select name="category" required>
+            <option value="" selected disabled>Оберіть категорію</option>
+            <option value="general_news">Загальні новини</option>
+            <option value="currency">Курс валют</option>
+        </select>
+        <button type="submit">Показати</button>
+    </form>
 
-{% if header %}
-    <h2>{{ header }}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Валюта</th>
-                <th>Купівля</th>
-                <th>Продаж</th>
-                <th>НБУ</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for rate in rates %}
-            <tr>
-                <td>{{ rate.currency }}</td>
-                <td>{{ rate.buy }}</td>
-                <td>{{ rate.sell }}</td>
-                <td>{{ rate.nbu }}</td>
-            </tr>
+    {% if header %}
+        <h2>{{ header }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Валюта</th>
+                    <th>Купівля</th>
+                    <th>Продаж</th>
+                    <th>НБУ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rate in rates %}
+                <tr>
+                    <td>{{ rate.currency }}</td>
+                    <td>{{ rate.buy }}</td>
+                    <td>{{ rate.sell }}</td>
+                    <td>{{ rate.nbu }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if header_2 %}
+        <h2>Курс валюти USD банків в Україні</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Банк</th>
+                    <th>Курс покупки</th>
+                    <th>Курс продажу</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rate in rates_2 %}
+                <tr>
+                    <td>{{ rate.currency }}</td>
+                    <td>{{ rate.buy }}</td>
+                    <td>{{ rate.sell }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if headlines %}
+        <h2>{{ category }}</h2>
+        <ul>
+            {% for headline in headlines %}
+                <li>
+                    <a href="{{ headline.link }}">{{ headline.title }}</a> <br>
+                    <small>Час публікації: {{ headline.time }}</small>
+                </li>
             {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-
-{% if header_2 %}
-    <h2>Курс валюти USD банків в Україні</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Банк</th>
-                <th>Курс покупки</th>
-                <th>Курс продажу</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for rate in rates_2 %}
-            <tr>
-                <td>{{ rate.currency }}</td>
-                <td>{{ rate.buy }}</td>
-                <td>{{ rate.sell }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-
-{% if headlines %}
-    <h2>{{ category }}</h2>
-    <ul>
-        {% for headline in headlines %}
-            <li>
-                <a href="{{ headline.link }}">{{ headline.title }}</a> <br>
-                <small>Час публікації: {{ headline.time }}</small>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-{% endif %}
+        </ul>
+    {% endif %}
 {% endblock %}

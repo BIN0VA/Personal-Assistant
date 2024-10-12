@@ -117,6 +117,23 @@
                         </div>
                     </div>
                 </nav>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                    <ul class="list-group list-group-horizontal">
+                        {% for name, currency in currencies.items %}
+                            <li class="list-group-item list-group-item-light rounded-top-0">
+                                <i class="bi bi-currency-{{ currency.icon }}"></i>
+                                <span class="pe-2">{{ name }}</span>
+
+                                {% for rate in currency.rates %}
+                                    <span class="badge text-bg-secondary rounded-pill">
+                                        {{ rate }}
+                                    </span>
+                                {% endfor %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             {% endblock %}
 
             <div class="container mt-5">

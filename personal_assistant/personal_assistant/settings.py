@@ -31,7 +31,7 @@ Env.read_env(BASE_DIR / '..' / '.env')
 SECRET_KEY = 'django-insecure-=9rum*zqep)hs+jdc)s#d4)ij8^)-k_!g2^92$+o4!r$4il63z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(env('DJANGO_DEBUG', default=False))
+DEBUG = True  # bool(env('DJANGO_DEBUG', default=False))
 
 ALLOWED_HOSTS = env(
     'DJANGO_ALLOWED_HOSTS',
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'pa_user',
     'pa_contacts',
     'pa_note',
-    'pa_news', # застосунок по новинам
+    'pa_news',
 ]
 
 MIDDLEWARE = [

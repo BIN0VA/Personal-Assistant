@@ -1,10 +1,12 @@
-from django.db import models
+from django.db.models import CharField, DateTimeField, Model, TextField, \
+    URLField
 
-class News(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    url = models.URLField()
-    published_at = models.DateTimeField()
+
+class News(Model):
+    title = CharField(max_length=255)
+    description = TextField()
+    url = URLField()
+    published_at = DateTimeField()
 
     def __str__(self):
         return self.title

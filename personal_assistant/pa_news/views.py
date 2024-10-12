@@ -1,10 +1,11 @@
-import requests
+from requests import get
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 
+
 def scrape_general_news():
     url = 'https://ua.korrespondent.net/'
-    response = requests.get(url)
+    response = get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     headlines = []
@@ -18,7 +19,7 @@ def scrape_general_news():
             title_tag = article.find('div', class_='article__title').find('a')
             title = title_tag.text.strip()
             link = title_tag['href']
-            
+
             headlines.append({
                 'title': title,
                 'link': link,
@@ -27,24 +28,28 @@ def scrape_general_news():
 
     return headlines
 
+
 def scrape_currency():
     url = "https://finance.i.ua/"
-    response = requests.get(url)
+    response = get(url)
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Заголовок
         header = soup.find('h2').text.strip()
-        
+
         # Список для зберігання курсів валют
         currency_rates = []
 
         # Знаходимо таблицю з курсами
-        table = soup.find('table')  # Знаходимо таблицю (можливо, вам потрібно буде вказати точніший селектор)
+        # Знаходимо таблицю (можливо, вам потрібно буде вказати точніший
+        # селектор)
+        table = soup.find('table')
 
         if table:
-            rows = table.find('tbody').find_all('tr')  # Збираємо всі рядки в таблиці
+            # Збираємо всі рядки в таблиці
+            rows = table.find('tbody').find_all('tr')
 
             for row in rows:
                 # Збираємо дані з кожного рядка
@@ -58,7 +63,7 @@ def scrape_currency():
                     'currency': currency,
                     'buy': buy,
                     'sell': sell,
-                    'nbu': nbu
+                    'nbu': nbu,
                 })
 
         return {
@@ -71,14 +76,16 @@ def scrape_currency():
             'rates': []
         }  # Обробка помилки
 
+
 def scrape_currency_2():
-    url = "https://finance.i.ua/"  # Замініть на URL, з якого будете отримувати другий набір курсів
-    response = requests.get(url)
+    # Замініть на URL, з якого будете отримувати другий набір курсів
+    url = "https://finance.i.ua/"
+    response = get(url)
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
-       # Знаходимо заголовок
+    # Знаходимо заголовок
     title = soup.find('h2', text='Курс валют банків в Україні').text
 
     # Знаходимо таблицю курсів валют
@@ -90,7 +97,7 @@ def scrape_currency_2():
         bank_name = row.find('th', class_='td-title').text.strip()
         buy_rate = row.find('td', class_='buy_rate').span.text.strip()
         sell_rate = row.find('td', class_='sell_rate').span.text.strip()
-        
+
         rates.append({
             'currency': bank_name,
             'buy': buy_rate,
@@ -98,6 +105,7 @@ def scrape_currency_2():
         })
 
     return title, rates
+
 
 def display_news(request):
     context = {}
@@ -112,7 +120,7 @@ def display_news(request):
             context['header'] = currency_data['header']
             context['rates'] = currency_data['rates']
             # Викликаємо scrape_currency_2 і додаємо результати до контексту
-            
+
             header_2, rates_2 = scrape_currency_2()
             context['header_2'] = header_2
             context['rates_2'] = rates_2

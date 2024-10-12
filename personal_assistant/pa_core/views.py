@@ -4,10 +4,25 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
+from pa_news.views import scrape_currency
+
 
 @login_required
 def home(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'pa_core/home.html')
+    items = {}
+
+    for item in scrape_currency()['rates']:
+        match item['currency']:
+            case 'USD': icon = 'dollar'
+            case 'EUR': icon = 'euro'
+            case _: icon = 'exchange'
+
+        items[item['currency']] = {
+            'icon': icon,
+            'rates': list(item.values())[1:],
+        }
+
+    return render(request, 'pa_core/home.html', {'currencies': items})
 
 
 def overview(
