@@ -19,4 +19,22 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, related_name='contacts', to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
+        migrations.AlterField(
+            model_name='contact',
+            name='email',
+            field=models.EmailField(blank=True, max_length=50, null=True),
+        ),
+        migrations.AlterField(
+            model_name='contact',
+            name='phone',
+            field=models.CharField(max_length=20),
+        ),
+        migrations.AddConstraint(
+            model_name='contact',
+            constraint=models.UniqueConstraint(fields=('user', 'phone'), name='unique_phone_per_user'),
+        ),
+        migrations.AddConstraint(
+            model_name='contact',
+            constraint=models.UniqueConstraint(fields=('user', 'email'), name='unique_email_per_user'),
+        ),
     ]
