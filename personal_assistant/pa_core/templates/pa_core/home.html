@@ -118,41 +118,7 @@
                     </div>
                 </nav>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-center">
-                    <ul class="list-group list-group-horizontal">
-                        {% for name, currency in currencies.items %}
-                            <li class="list-group-item list-group-item-light rounded-top-0">
-                                <i class="bi bi-currency-{% if currency.icon %}{{ currency.icon }}{% else %}exchange{% endif %}"></i>
-                                <span class="pe-2">
-                                    {% if currency.icon %}
-                                        {{ currency.icon|title }} ({{ name }})
-                                    {% else %}
-                                        {{ name }}
-                                    {% endif %}
-                                </span>
-
-                                {% for type, rate in currency.rates.items %}
-                                    <span class="badge text-bg-secondary rounded-pill">
-                                        <span class="text-white-50">{{ type }}:</span>
-                                        <span>{{ rate }}</span>
-                                    </span>
-                                {% endfor %}
-                            </li>
-                        {% endfor %}
-
-                        {% url 'pa_news:bank' as bank %}
-
-                        {% if request.path != bank %}
-                            <a
-                                href="{{ bank }}"
-                                class="list-group-item rounded-top-0"
-                            >
-                                <i class="bi bi-bank"></i>
-                                Banks
-                            </a>
-                        {% endif %}
-                    </ul>
-                </div>
+                {{ exchange_rates }}
             {% endblock %}
 
             <div class="container mt-5">
@@ -188,8 +154,10 @@
 
                 <main class="mt-5">
                     {% block content %}
-                        It assists you in organizing the phone book, creating notes,
-                        and more.
+                        It assists you in organizing the phone book, creating
+                        notes, and more.
+
+                        {{ news }}
                     {% endblock %}
                 </main>
             </div>

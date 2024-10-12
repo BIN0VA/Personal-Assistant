@@ -1,40 +1,15 @@
-{% extends 'pa_core/home.html' %}
-
-{% block title %}Актуальні новини{% endblock %}
-
-{% block content %}
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse; /* Зливаючи границі */
-            margin-top: 20px; /* Відступ зверху */
-        }
-
-        th, td {
-            padding: 12px; /* Відступи всередині комірок */
-            text-align: left; /* Вирівнювання тексту */
-            border: 1px solid #ddd; /* Границя для комірок */
-        }
-
-        th {
-            background-color: #f2f2f2; /* Фон для заголовків */
-            font-weight: bold; /* Жирний шрифт для заголовків */
-        }
-
-        tr:hover {
-            background-color: #f5f5f5; /* Підсвічування рядків при наведенні */
-        }
-    </style>
-
-    {% if headlines %}
-        <h2>{{ category }}</h2>
-        <ul>
-            {% for headline in headlines %}
-                <li>
-                    <a href="{{ headline.link }}">{{ headline.title }}</a> <br>
-                    <small>Час публікації: {{ headline.time }}</small>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock %}
+<section class="list-group list-group-horizontal mt-5">
+    {% for headline in items %}
+        <a
+            href="{{ headline.link }}"
+            class="list-group-item list-group-item-action"
+            target="_blank"
+        >
+            <small class="text-body-secondary">
+                <i class="bi bi-clock-history"></i>
+                {{ headline.time }}
+            </small>
+            <p>{{ headline.title }}</p>
+        </a>
+    {% endfor %}
+</section>
