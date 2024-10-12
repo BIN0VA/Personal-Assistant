@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'pa_core',
     'pa_user',
     'pa_contacts', #Додав застосунок для контактів
+    'pa_tag',
 ]
 
 MIDDLEWARE = [
