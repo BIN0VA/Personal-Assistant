@@ -1,0 +1,54 @@
+{% extends "pa_core/form.html" %} 
+
+{% block title %}
+    Edit contact
+{% endblock %}
+
+{% block form %}
+    <div class="mb-3">
+        <label> Name:
+            {{ form.name }}
+        </label>
+        {% if form.errors.name %}
+            <div class="invalid-feedback d-block">{{ form.errors.name.0 }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label> Address:
+            {{ form.address }}
+        </label>
+        {% if form.errors.address %}
+            <div class="invalid-feedback d-block">{{ form.errors.address }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label> Phone number:
+            {{ form.phone }}
+        </label>
+        {% if form.errors.phone %}
+            <div class="invalid-feedback d-block">{{ form.errors.phone.0 }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"> E-mail: 
+            {{ form.email }}
+        </label>
+        {% for error in form.email.errors %}
+            <div class="invalid-feedback d-block"> {{ error }} </div>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label> Birthday:
+            {{ form.birthday }}
+        </label>
+        {% if form.errors.birthday %}
+            <div class="invalid-feedback d-block">{{ form.errors.birthday.0 }}</div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block button %}
+    Save changes
+{% endblock %}
+{% block footer %}
+{% endblock %}
