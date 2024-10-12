@@ -1,5 +1,5 @@
 from django.db.models.functions import ExtractMonth, ExtractDay
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
 from pa_core.views import overview
@@ -84,3 +84,17 @@ def create(request):
 def delete(request, contact_id):
     Contact.objects.get(pk=contact_id).delete()
     return redirect(to='pa_contacts:main')
+
+
+def edit(request, contact_id):
+    contact = get_object_or_404(Contact, id=contact_id)
+    
+    if request.method == 'POST':
+        form = ContactsForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
+            return redirect('pa_contacts:main')
+    else:
+        form = ContactsForm(instance=contact)
+    
+    return render(request, 'pa_contacts/edit.html', {'form': form})
