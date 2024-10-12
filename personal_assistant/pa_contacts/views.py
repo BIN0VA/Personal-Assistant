@@ -97,4 +97,4 @@ def edit(request, contact_id):
     else:
         form = ContactsForm(instance=contact)
     
-    return render(request, 'pa_contacts/edit.html', {'form': form, 'contact': contact})
+    return render(request, 'pa_contacts/edit.html', {'form': form})
