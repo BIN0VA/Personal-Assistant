@@ -68,6 +68,16 @@ class PaUserCreationForm(UserCreationForm):
 
         FormHelper.validate(self)
 
+    def save(self, commit: bool = True):
+        user = super().save(commit=False)
+
+        user.is_active = False
+
+        if commit:
+            user.save()
+
+        return user
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')

@@ -21,6 +21,7 @@ psycopg2-binary = "^2.9.9"
 phonenumbers = "^8.13.47"
 beautifulsoup4 = "^4.12.3"
 lxml = "^5.3.0"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]

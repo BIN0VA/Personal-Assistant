@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
 from django.urls import reverse
 
@@ -21,6 +22,7 @@ def global_context(request: WSGIRequest) -> dict:
         active_entity_type = entity_types[0]
 
     return {
+        'project_name': settings.PROJECT_NAME,
         'search': {
             current_entity_type: current_entity_type == active_entity_type
             for current_entity_type in entity_types
