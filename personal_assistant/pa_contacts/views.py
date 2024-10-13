@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import ExtractMonth, ExtractDay
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
@@ -10,7 +11,20 @@ from .models import Contact
 
 @login_required
 def main(request):
+    query = request.GET.get('search-contacts', '')
     contacts = Contact.objects.filter(user=request.user)
+
+    if query:
+        contacts_search = contacts.filter(
+            Q(name__icontains=query) |
+            Q(address__icontains=query) |
+            Q(phone__icontains=query) |
+            Q(email__icontains=query)
+        ) 
+    else:
+        contacts_search = contacts
+    
+
     today = timezone.now().date()
     days_param = request.GET.get('days', 7)
 
@@ -60,7 +74,7 @@ def main(request):
     return overview(
         request,
         'contacts',
-        contacts,
+        contacts_search,
         {
             'upcoming_birthdays': sorted_contacts,
             'days': days,
