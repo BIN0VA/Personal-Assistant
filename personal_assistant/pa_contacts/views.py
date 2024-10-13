@@ -24,7 +24,6 @@ def main(request):
     else:
         contacts_search = contacts
     
-
     today = timezone.now().date()
     days_param = request.GET.get('days', 7)
 
