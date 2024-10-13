@@ -89,25 +89,25 @@
                                 </li>
                             </ul>
 
-                            <form
-                                action="{% url 'pa_note:note' %}"
-                                class="d-flex me-3"
-                                role="search"
-                            >
+                            <form action="{% url 'pa_note:note' %}" class="d-flex me-3" role="search">
                                 <div class="input-group">
                                     <input
                                         class="form-control"
                                         type="search"
                                         name="search"
                                         value="{{ request.GET.search }}"
-                                        placeholder="Search"
-                                        aria-label="Search"
+                                        placeholder="Search Notes"
+                                        aria-label="Search Notes"
                                     />
-
-                                    <button
-                                        class="btn btn-outline-secondary"
-                                        type="submit"
-                                    >
+                                    <input
+                                        class="form-control"
+                                        type="search"
+                                        name="tag"
+                                        value="{{ request.GET.tag }}"
+                                        placeholder="Search Tags"
+                                        aria-label="Search Tags"
+                                    />
+                                    <button class="btn btn-outline-secondary" type="submit">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>

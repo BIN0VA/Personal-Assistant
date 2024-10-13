@@ -9,16 +9,13 @@ from .models import Note
 
 
 def note(request):
-    items = Note.objects
+    items = Note.objects.prefetch_related('tags')  
 
     if query := request.GET.get('search'):
-        if connection.vendor == 'postgresql':
-            items = items.annotate(search=SearchVector('name')) \
-                .filter(search=query)
-        else:
-            items = items.filter(name__icontains=query)
-    else:
-        items = items.all()
+        items = items.filter(name__icontains=query)
+
+    if tag_query := request.GET.get('tag'):
+        items = items.filter(tags__name__icontains=tag_query)
 
     return overview(request, 'note', items)
 
