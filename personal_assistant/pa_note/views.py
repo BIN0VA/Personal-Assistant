@@ -14,7 +14,10 @@ from .models import Note
 def note(request):
     items = Note.objects.filter(user=request.user)
 
-    if query := request.GET.get('search'):
+    if (
+        (request.GET.get('type', 'contacts').lower() == 'notes') and
+        (query := request.GET.get('query'))
+    ):
         if connection.vendor == 'postgresql':
             items = items.annotate(search=SearchVector('name')) \
                 .filter(search=query)
@@ -38,7 +41,7 @@ class CreateView(View):
             note = form.save(commit=False)
             note.user = request.user
             note.save()
-            return redirect('pa_note:note')
+            return redirect('pa_note:home')
         return render(request, 'pa_note/add_note.html', {'form': form})
 
 
@@ -47,7 +50,7 @@ class DeleteView(View):
     def post(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         note.delete()
-        return redirect('pa_note:note')
+        return redirect('pa_note:home')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -66,7 +69,7 @@ class UpdateView(View):
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
             form.save()
-            return redirect('pa_note:note')
+            return redirect('pa_note:home')
         return render(
             request,
             'pa_note/edit_note.html',
@@ -80,4 +83,4 @@ class DoneUpdateView(View):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         note.done = True
         note.save()
-        return redirect('pa_note:note')
+        return redirect('pa_note:home')
