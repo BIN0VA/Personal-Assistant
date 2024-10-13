@@ -17,6 +17,11 @@
             rel="stylesheet"
         />
 
+        <link
+            href="https://getbootstrap.com/docs/5.3/examples/headers/headers.css"
+            rel="stylesheet"
+        />
+
         {% load static %}
         <link
             rel="icon"
@@ -25,112 +30,179 @@
         />
     </head>
     <body>
-        {% block navigation %}
-            <nav class="navbar navbar-expand-lg bg-light">
-                <div class="container">
-                    <a class="navbar-brand" href="{% url 'pa_core:home' %}">
-                        <i class="bi bi-clipboard-data"></i>
-                        Personal Assistant
-                    </a>
+        <div class="container">
+            {% block navigation %}
+                <nav class="navbar navbar-expand-lg bg-light rounded mt-3">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="{% url 'pa_core:home' %}">
+                            <i class="bi bi-clipboard-data"></i>
+                            Personal Assistant
+                        </a>
 
-                    <button
-                        class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-                    <div
-                        class="collapse navbar-collapse"
-                        id="navbarSupportedContent"
-                    >
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    aria-current="page"
-                                    href="{% url 'pa_core:home' %}"
-                                >
-                                    Home
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    aria-current="page"
-                                    href="{% url 'pa_contacts:main' %}"
-                                >
-                                    Contacts
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    aria-current="page"
-                                    href="{% url 'pa_note:note' %}"
-                                >
-                                    Notes
-                                </a>
-                            </li>
-                        </ul>
-                        <span class="navbar-text">
-                            Hello, {{ user.username }}
-                        </span>
-                        <div class="text-end ms-3">
-                            <a
-                                class="btn btn-outline-dark"
-                                href="{% url 'pa_user:logout' %}"
+                        <div
+                            class="collapse navbar-collapse"
+                            id="navbarSupportedContent"
+                        >
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        aria-current="page"
+                                        href="{% url 'pa_core:home' %}"
+                                    >
+                                        Home
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        aria-current="page"
+                                        href="{% url 'pa_contacts:home' %}"
+                                    >
+                                        Contacts
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link"
+                                        aria-current="page"
+                                        href="{% url 'pa_note:home' %}"
+                                    >
+                                        Notes
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <form
+                                action="{% url 'pa_core:search' %}"
+                                class="d-flex me-3"
+                                role="search"
                             >
-                                Logout
-                            </a>
+                                <div class="input-group">
+                                    <div>
+                                        <input
+                                            class="form-control rounded-end-0"
+                                            type="search"
+                                            name="query"
+                                            value="{{ request.GET.query }}"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                        />
+                                    </div>
+
+                                    <select name="type" class="form-select">
+                                        {% for type, active in search.items %}
+                                            <option
+                                                value="{{ type }}"
+                                                {% if active %}selected{% endif %}
+                                            >
+                                                {{ type|title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <button
+                                        class="btn btn-outline-secondary"
+                                        type="submit"
+                                    >
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="dropdown text-end">
+                                <button
+                                    class="btn dropdown-toggle d-flex align-items-center"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                                    <span>{{ user }}</span>
+                                </button>
+
+                                <ul class="dropdown-menu text-small">
+                                    <li>
+                                        <a
+                                            href="{% url 'pa_news:update' %}"
+                                            class="dropdown-item"
+                                        >
+                                            Update news
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a
+                                            href="{% url 'pa_user:logout' %}"
+                                            class="dropdown-item"
+                                        >
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                              </div>
                         </div>
                     </div>
-                </div>
-            </nav>
-        {% endblock %}
+                </nav>
 
-        <div class="container mt-5">
-            {% block title_wrapper %}
-                <h1>{% block title %}Welcome!{% endblock %}</h1>
+                {{ exchange_rates }}
             {% endblock %}
 
-            {% for message in messages %}
-                <div
-                    class="
-                        alert
-                        {% if message.tags %}
-                            {{ message.tags }}
-                        {% else %}
-                            alert-secondary
-                        {% endif %}
-                        alert-dismissible
-                        fade
-                        show
-                    "
-                    role="alert"
-                >
-                    {{ message }}
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                    ></button>
-                </div>
-            {% endfor %}
-
-            <main class="mt-5">
-                {% block content %}
-                    It assists you in organizing the phone book, creating notes,
-                    and more.
+            <div class="container mt-5">
+                {% block title_wrapper %}
+                    <h1>{% block title %}Welcome!{% endblock %}</h1>
                 {% endblock %}
-            </main>
+
+                {% if messages %}
+                    <div class="mt-4">
+                        {% for message in messages %}
+                            <div
+                                class="
+                                    alert
+                                    {% if message.tags %}
+                                        {{ message.tags }}
+                                    {% else %}
+                                        alert-secondary
+                                    {% endif %}
+                                    alert-dismissible
+                                    fade
+                                    show
+                                "
+                                role="alert"
+                            >
+                                {{ message }}
+
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <main class="mt-4">
+                    {% block content %}
+                        It assists you in organizing the phone book, creating
+                        notes, and more.
+
+                        {{ news }}
+                    {% endblock %}
+                </main>
+            </div>
         </div>
 
         <script

@@ -1,10 +1,12 @@
 [tool.poetry]
 name = "personal-assistant"
-version = "0.8.0"
+version = "0.15.0"
 description = "It assists you in organizing the phone book, creating notes, and more."
 authors = [
-    "Oleksandr Horbatiuk <oleksandr.v.horbatiuk@gmail.com>",
     "Illia Trubnikov <illyatr25@gmail.com>",
+    "Nataly Sholohova <n.sholohova27@gmail.com>",
+    "Oleksandr Horbatiuk <oleksandr.v.horbatiuk@gmail.com>",
+    "Alina Kylymnyk <kylymnykalina111@gmail.com>",
 ]
 readme = "README.md"
 package-mode = false
@@ -16,6 +18,9 @@ django-environ = "^0.11.2"
 gunicorn = "^23.0.0"
 whitenoise = "^6.7.0"
 psycopg2-binary = "^2.9.9"
+phonenumbers = "^8.13.47"
+beautifulsoup4 = "^4.12.3"
+lxml = "^5.3.0"
 
 
 [tool.poetry.group.dev.dependencies]
