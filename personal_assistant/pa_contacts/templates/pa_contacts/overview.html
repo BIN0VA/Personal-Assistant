@@ -40,7 +40,14 @@
                                         </p>
                                     {% endif %}
                                 </div>
-                                <div class="card-footer">
+                                <div class="card-footer d-flex justify-content-between">
+                                    <a
+                                        href="{% url 'pa_contacts:edit' contact.id %}"
+                                        role="button"
+                                        class="btn btn-primary"
+                                    >
+                                        <i class="bi bi-pencil-fill"></i> Edit
+                                    </a>
                                     <a
                                         href="{% url 'pa_contacts:delete' contact.id %}"
                                         role="button"
