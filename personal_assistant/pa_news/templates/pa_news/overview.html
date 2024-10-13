@@ -11,11 +11,12 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            {% for cells in items %}
+            {% for item in items %}
                 <tr>
                     <td>{{ forloop.counter }}.</td>
-
-                    {% for cell in cells %}<td>{{ cell }}</td>{% endfor %}
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.buy }}</td>
+                    <td>{{ item.sell }}</td>
                 </tr>
             {% endfor %}
         </tbody>
