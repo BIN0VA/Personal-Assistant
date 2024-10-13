@@ -1,0 +1,46 @@
+{% extends 'pa_core/home.html' %}
+
+{% block title %}
+    Tags
+{% endblock %}
+
+{% block content %}
+    
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            {{ form.name.label_tag }}:
+            {{ form.name }}
+            <div class="invalid-feedback">
+                {{ form.name.errors }}
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            Add Tag
+        </button>
+    </form>
+
+    <h2 class="mt-4">Existing Tags</h2>
+    {% if items %}
+        <ul class="list-group">
+            {% for tag in items %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ tag.name }}
+                    <form method="post" action="{% url 'pa_tag:delete' tag.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">No Tags Found!</h4>
+            <p>You currently have no tags. Add your first tag!</p>
+            <hr>
+            <p class="mb-0">Press the "Add Tag" button to get started!</p>
+        </div>
+    {% endif %}
+{% endblock %}

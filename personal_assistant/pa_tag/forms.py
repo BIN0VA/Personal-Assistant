@@ -1,6 +1,6 @@
 from django.forms import ModelForm, CharField, TextInput
-from .models import Tag
 
+from .models import Tag
 
 
 class TagForm(ModelForm):

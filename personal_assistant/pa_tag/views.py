@@ -1,24 +1,22 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from .models import Tag
 from .forms import TagForm
 
-def main(request):
-    tags =  Tag.objects.all()
-    context = {"tags":tags}
 
-    return render(request, 'tags/tags.html', context)
-
-def add_tag(request):
+def tags(request):
     if request.method == 'POST':
         form = TagForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(to='pa_tags:main')
-        else:
-            return render(request, 'tags/add_tag.html', {'form': form})
+            return redirect('pa_tag:tags')
+    else:
+        form = TagForm()
 
-    return render(request, 'tags/add_tag.html', {'form': TagForm()})
+    items = Tag.objects.all()
+    return render(request, 'pa_tags/list.html', {'items': items, 'form': form})
 
 def delete(request, tag_id):
-    Tag.objects.get(pk=tag_id).delete()
-    return redirect(to='pa_tags:main')
+    tag = get_object_or_404(Tag, id=tag_id)
+    tag.delete()
+    return redirect('pa_tag:tags')
