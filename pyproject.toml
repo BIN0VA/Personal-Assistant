@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "personal-assistant"
-version = "0.12.0"
+version = "0.14.0"
 description = "It assists you in organizing the phone book, creating notes, and more."
 authors = [
     "Illia Trubnikov <illyatr25@gmail.com>",
