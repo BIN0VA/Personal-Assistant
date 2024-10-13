@@ -64,7 +64,7 @@
                                     <a
                                         class="nav-link"
                                         aria-current="page"
-                                        href="{% url 'pa_contacts:main' %}"
+                                        href="{% url 'pa_contacts:home' %}"
                                     >
                                         Contacts
                                     </a>
@@ -73,7 +73,7 @@
                                     <a
                                         class="nav-link"
                                         aria-current="page"
-                                        href="{% url 'pa_note:note' %}"
+                                        href="{% url 'pa_note:home' %}"
                                     >
                                         Notes
                                     </a>
@@ -81,19 +81,32 @@
                             </ul>
 
                             <form
-                                action="{% url 'pa_note:note' %}"
+                                action="{% url 'pa_core:search' %}"
                                 class="d-flex me-3"
                                 role="search"
                             >
                                 <div class="input-group">
-                                    <input
-                                        class="form-control"
-                                        type="search"
-                                        name="search"
-                                        value="{{ request.GET.search }}"
-                                        placeholder="Search"
-                                        aria-label="Search"
-                                    />
+                                    <div>
+                                        <input
+                                            class="form-control rounded-end-0"
+                                            type="search"
+                                            name="query"
+                                            value="{{ request.GET.query }}"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                        />
+                                    </div>
+
+                                    <select name="type" class="form-select">
+                                        {% for type, active in search.items %}
+                                            <option
+                                                value="{{ type }}"
+                                                {% if active %}selected{% endif %}
+                                            >
+                                                {{ type|title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
 
                                     <button
                                         class="btn btn-outline-secondary"

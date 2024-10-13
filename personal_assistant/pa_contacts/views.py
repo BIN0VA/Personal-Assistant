@@ -11,10 +11,12 @@ from .models import Contact
 
 @login_required
 def main(request):
-    query = request.GET.get('search_contacts', '')
     contacts = Contact.objects.filter(user=request.user)
 
-    if query:
+    if (
+        (request.GET.get('type', 'contacts').lower() in ('', 'contacts')) and
+        (query := request.GET.get('query'))
+    ):
         contacts_search = contacts.filter(
             Q(name__icontains=query) |
             Q(address__icontains=query) |
@@ -91,7 +93,7 @@ def create(request):
             contact = form.save(commit=False)
             contact.user = request.user
             contact.save()
-            return redirect('pa_contacts:main')
+            return redirect('pa_contacts:home')
         return render(request, 'pa_contacts/add_contact.html', {'form': form})
 
     return render(request, 'pa_contacts/add_contact.html', {'form': ContactsForm()})
@@ -101,7 +103,7 @@ def create(request):
 def delete(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id, user=request.user)
     contact.delete()
-    return redirect(to='pa_contacts:main')
+    return redirect('pa_contacts:home')
 
 
 @login_required
@@ -112,7 +114,7 @@ def edit(request, contact_id):
         form = ContactsForm(request.POST, instance=contact, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('pa_contacts:main')
+            return redirect('pa_contacts:home')
     else:
         form = ContactsForm(instance=contact, user=request.user)
 

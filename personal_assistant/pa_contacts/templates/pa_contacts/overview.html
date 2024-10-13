@@ -3,26 +3,6 @@
 {% block items %}
     <div class="container md-4">
         <div class="row">
-            <form
-                method="get"
-                action="{% url 'pa_contacts:main' %}"
-                class="col-md-9"
-                role="search"
-            >
-                <div class="input-group">
-                    <input
-                        class="form-control"
-                        type="search"
-                        name="search_contacts"
-                        placeholder="Search contacts"
-                        value="{{ request.GET.search_contacts }}"
-                        class="form-control"
-                    >
-                    <button type="submit" class="btn btn-outline-secondary">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
             <div class="col-md-9">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {% for contact in items %}
