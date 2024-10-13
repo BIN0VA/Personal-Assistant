@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 
 from .context_processors import global_context
 
@@ -37,16 +37,21 @@ def search(request: WSGIRequest) -> HttpResponsePermanentRedirect:
 def overview(
     request: WSGIRequest,
     entity: str,
-    items: str,
+    items: list,
     context: dict = {},
     title: str = None
 ) -> HttpResponse:
+    try:
+        url = reverse(f'pa_{entity}:create')
+    except NoReverseMatch:
+        url = None
+
     return render(
         request,
         f'pa_{entity}/overview.html',
         {
             'title': title or f'{entity.title()}s',
-            'url': reverse(f'pa_{entity}:create'),
+            'url': url,
             'items': items,
             **context,
         },
