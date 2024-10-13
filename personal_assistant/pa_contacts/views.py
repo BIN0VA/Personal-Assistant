@@ -11,7 +11,7 @@ from .models import Contact
 
 @login_required
 def main(request):
-    query = request.GET.get('search-contacts', '')
+    query = request.GET.get('search_contacts', '')
     contacts = Contact.objects.filter(user=request.user)
 
     if query:
@@ -20,10 +20,10 @@ def main(request):
             Q(address__icontains=query) |
             Q(phone__icontains=query) |
             Q(email__icontains=query)
-        ) 
+        )
     else:
         contacts_search = contacts
-    
+
     today = timezone.now().date()
     days_param = request.GET.get('days', 7)
 
@@ -107,7 +107,7 @@ def delete(request, contact_id):
 @login_required
 def edit(request, contact_id):
     contact = get_object_or_404(Contact, id=contact_id, user=request.user)
-    
+
     if request.method == 'POST':
         form = ContactsForm(request.POST, instance=contact, user=request.user)
         if form.is_valid():
@@ -115,5 +115,5 @@ def edit(request, contact_id):
             return redirect('pa_contacts:main')
     else:
         form = ContactsForm(instance=contact, user=request.user)
-    
+
     return render(request, 'pa_contacts/edit.html', {'form': form})
