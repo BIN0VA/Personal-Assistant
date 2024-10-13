@@ -17,6 +17,11 @@
             rel="stylesheet"
         />
 
+        <link
+            href="https://getbootstrap.com/docs/5.3/examples/headers/headers.css"
+            rel="stylesheet"
+        />
+
         {% load static %}
         <link
             rel="icon"
@@ -104,16 +109,36 @@
                                 </div>
                             </form>
 
-                            <span class="navbar-text">Hello, {{ user }}</span>
-
-                            <div class="text-end ms-3">
-                                <a
-                                    class="btn btn-outline-dark"
-                                    href="{% url 'pa_user:logout' %}"
+                            <div class="dropdown text-end">
+                                <button
+                                    class="btn dropdown-toggle d-flex align-items-center"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
                                 >
-                                    Logout
-                                </a>
-                            </div>
+                                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                                    <span>{{ user }}</span>
+                                </button>
+
+                                <ul class="dropdown-menu text-small">
+                                    <li>
+                                        <a
+                                            href="{% url 'pa_news:update' %}"
+                                            class="dropdown-item"
+                                        >
+                                            Update news
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a
+                                            href="{% url 'pa_user:logout' %}"
+                                            class="dropdown-item"
+                                        >
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                              </div>
                         </div>
                     </div>
                 </nav>
@@ -126,33 +151,37 @@
                     <h1>{% block title %}Welcome!{% endblock %}</h1>
                 {% endblock %}
 
-                {% for message in messages %}
-                    <div
-                        class="
-                            alert
-                            {% if message.tags %}
-                                {{ message.tags }}
-                            {% else %}
-                                alert-secondary
-                            {% endif %}
-                            alert-dismissible
-                            fade
-                            show
-                        "
-                        role="alert"
-                    >
-                        {{ message }}
+                {% if messages %}
+                    <div class="mt-4">
+                        {% for message in messages %}
+                            <div
+                                class="
+                                    alert
+                                    {% if message.tags %}
+                                        {{ message.tags }}
+                                    {% else %}
+                                        alert-secondary
+                                    {% endif %}
+                                    alert-dismissible
+                                    fade
+                                    show
+                                "
+                                role="alert"
+                            >
+                                {{ message }}
 
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                            aria-label="Close"
-                        ></button>
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                {% endif %}
 
-                <main class="mt-5">
+                <main class="mt-4">
                     {% block content %}
                         It assists you in organizing the phone book, creating
                         notes, and more.

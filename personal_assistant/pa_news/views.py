@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import info
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import redirect, render
@@ -34,6 +35,16 @@ class UpdateView(View):
             else redirect('pa_core:home')
 
     def get(self, request: WSGIRequest) -> HttpResponse:
+        info(
+            request,
+            '''Press the button below to see the first news and data on
+            exchange rates, whether those displayed at the moment have been
+            updated. After the first successful launch, information on currency
+            rates should appear on all pages (it will be displayed immediately
+            after the navigation section). Also, a news feed should appear at
+            the bottom of the main page.''',
+        )
+
         return render(request, 'pa_news/update.html')
 
     def post(self, request: WSGIRequest) -> HttpResponsePermanentRedirect:
