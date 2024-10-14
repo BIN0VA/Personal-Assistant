@@ -83,6 +83,15 @@
                                         Notes
                                     </a>
                                 </li>
+                                <li class="nav-item"></li>
+                                    <a
+                                        class="nav-link"
+                                        aria-current="page"
+                                        href="{% url 'pa_tag:home' %}"
+                                    >
+                                        Tags
+                                    </a>
+                                </li>
                             </ul>
 
                             <form
@@ -222,6 +231,25 @@
             crossorigin="anonymous"
         ></script>
 
-        {% block footer %}{% endblock %}
+        {% block footer %}
+            <script>
+                (() => {
+                    'use strict'
+
+                    const forms = document.querySelectorAll('.needs-validation')
+
+                    Array.from(forms).forEach(form => {
+                        form.addEventListener('submit', event => {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+                })()
+            </script>
+        {% endblock %}
     </body>
 </html>

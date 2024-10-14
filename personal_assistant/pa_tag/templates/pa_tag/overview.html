@@ -1,0 +1,43 @@
+{% extends 'pa_core/overview.html' %}
+
+{% block content %}
+    <form method="post" class="needs-validation mb-3" novalidate>
+        {% csrf_token %}
+
+        <div class="input-group">
+            {{ form.name }}
+
+            {% if form.errors.name %}
+                <div id="name-error" class="invalid-feedback">
+                    {{ form.name.errors }}
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-success">
+                {% block label %}{{ block.super }}{% endblock %}
+            </button>
+        </div>
+    </form>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block items %}
+    {% for name, id in items.items %}
+        <span class="input-group w-auto float-start my-3 me-3">
+            <span class="input-group-text ps-3 rounded-start-pill{% if not id %} pe-3 rounded-end-pill{% endif %}">
+                {{ name }}
+            </span>
+
+            {% if id %}
+                <a
+                    href="{% url 'pa_tag:delete' id %}"
+                    class="btn btn-danger rounded-end-pill pe-3"
+                    title="Delete"
+                >
+                    <i class="bi bi-trash3-fill"></i>
+                </a>
+            {% endif %}
+        </span>
+    {% endfor %}
+{% endblock %}

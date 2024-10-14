@@ -90,6 +90,7 @@ def overview(
     entity: str,
     items: list,
     context: dict = {},
+    icon: str = None,
     title: str = None
 ) -> HttpResponse:
     try:
@@ -103,6 +104,7 @@ def overview(
         {
             'title': title or f'{entity.title()}s',
             'url': url,
+            'icon': icon or 'plus',
             'items': items,
             **context,
         },
