@@ -1,0 +1,15 @@
+<section class="list-group list-group-horizontal mt-5">
+    {% for headline in items %}
+        <a
+            href="{{ headline.link }}"
+            class="list-group-item list-group-item-action"
+            target="_blank"
+        >
+            <small class="text-body-secondary">
+                <i class="bi bi-clock-history"></i>
+                {{ headline.time }}
+            </small>
+            <p>{{ headline.title }}</p>
+        </a>
+    {% endfor %}
+</section>

@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'pa_user',
     'pa_contacts',
     'pa_note',
+    'pa_news',
+    'pa_tag',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +80,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'pa_core.context_processors.global_context',
+                'pa_news.context_processors.global_context',
             ],
         },
     },
@@ -164,3 +168,5 @@ EMAIL_PORT = env('DJANGO_EMAIL_PORT')
 EMAIL_HOST_USER = env('DJANGO_EMAIL_USER')
 EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+PROJECT_NAME = 'Personal Assistant'

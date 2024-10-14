@@ -22,10 +22,11 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('pa_core.urls')),
-    # Додав файл urls зі застосунку контактів
-    path('contacts/', include('pa_contacts.urls')), 
+    path('contacts/', include('pa_contacts.urls')),
     path('user/', include('pa_user.urls')),
     path('note/', include('pa_note.urls')),
+    path('news/', include('pa_news.urls')),
+    path('tag/', include('pa_tag.urls')),
     path('admin/', admin.site.urls),
     path('file/', include('pa_file.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
