@@ -92,6 +92,15 @@
                                         Tags
                                     </a>
                                 </li>
+                                <li class="nav-item"></li>
+                                    <a
+                                        class="nav-link"
+                                        aria-current="page"
+                                        href="{% url 'pa_file:home' %}"
+                                    >
+                                        Files
+                                    </a>
+                                </li>
                             </ul>
 
                             <form
@@ -142,6 +151,17 @@
                                 </button>
 
                                 <ul class="dropdown-menu text-small">
+                                    <li>
+                                        <a
+                                            href="{% url 'pa_file:home' %}"
+                                            class="dropdown-item"
+                                        >
+                                            My files
+                                        </a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider" /></li>
+
                                     {% if user.is_superuser %}
                                         <li>
                                             <a
@@ -162,6 +182,7 @@
                                         </li>
                                         <li><hr class="dropdown-divider" /></li>
                                     {% endif %}
+
                                     <li>
                                         <a
                                             href="{% url 'pa_user:logout' %}"

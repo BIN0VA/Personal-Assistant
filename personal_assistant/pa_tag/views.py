@@ -39,7 +39,7 @@ def main(request: WSGIRequest):
         for tag in Tag.objects.annotate(usages=Count('notes'))
     }
 
-    return overview(request, 'tag', items, {'form': form}, 'tag-fill')
+    return overview(request, 'tag', items, {'form': form}, 'tag')
 
 
 @login_required

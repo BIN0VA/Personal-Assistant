@@ -81,7 +81,7 @@ def main(request):
             'days': days,
             'tabs': tabs,
         },
-        'person-fill',
+        'person',
         'Contacts',
     )
 

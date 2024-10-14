@@ -1,0 +1,29 @@
+{% extends 'pa_core/form.html' %}
+
+{% block title %}Upload file{% endblock %}
+
+{% block attributes %}enctype="multipart/form-data"{% endblock %}
+
+{% block form %}
+    <div class="mb-3">
+        <label for="name">File</label>
+        {{ form.file }}
+        {% if form.errors.file %}
+            <div id="file-error" class="invalid-feedback">
+                {{ form.errors.file }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="name" class="d-block">Category</label>
+        {{ form.category }}
+        {% if form.errors.category %}
+            <div id="category-error" class="invalid-feedback">
+                {{ form.errors.category }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block button %}Upload{% endblock %}
