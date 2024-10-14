@@ -1,27 +1,29 @@
 {% extends 'pa_core/overview.html' %}
 
-{% block items %}
-    <div class="mb-4">
-        <a href="{% url 'pa_file:home' %}" class="btn btn-secondary">
-            All Files
-        </a>
-
-        {% for type in types %}
-            <a
-                href="{% url 'pa_file:category' type|lower %}"
-                class="btn btn-secondary"
-            >
-                {{ type}}
-            </a>
-        {% endfor %}
-    </div>
-
-    <ul class="list-group">
-        {% for path, category in items.items %}
-            <li class="list-group-item">
-                <a href="{{ path }}" target="_blank">{{ path }}</a>
-                <span class="badge bg-primary">{{ category }}</span>
+{% block content %}
+    <ul class="nav nav-tabs mb-3">
+        {% for link, tab in tabs.items %}
+            <li class="nav-item">
+                <a href="{{ link }}" class="{{ tab.classes }}">{{ tab.label }}</a>
             </li>
         {% endfor %}
     </ul>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block items %}
+    <div class="list-group">
+        {% for file in items %}
+            <a href="{{ file.file.url }}" target="_blank" class="list-group-item list-group-item-action">
+                {% if file.category == 'unknown' %}
+                    <i class="bi bi-file-earmark"></i>
+                {% else %}
+                    <i class="bi bi-file-earmark-{{ file.category }}"></i>
+                {% endif %}
+
+                {{ file }}
+            </a>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -29,7 +29,7 @@ def note(request):
     else:
         items = items.all()
 
-    return overview(request, 'note', items, icon='sticky-fill')
+    return overview(request, 'note', items, icon='sticky')
 
 
 @method_decorator(login_required, name='dispatch')

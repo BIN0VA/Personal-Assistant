@@ -23,4 +23,4 @@ class File(Model):
     user = ForeignKey(User, CASCADE)
 
     def __str__(self):
-        return f'{self.file.url.split("/")[-1]} ({self.user.username})'
+        return self.file.url.split('/')[-1]

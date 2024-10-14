@@ -104,7 +104,7 @@ def overview(
         {
             'title': title or f'{entity.title()}s',
             'url': url,
-            'icon': icon or 'plus',
+            'icon': (icon or 'plus') + '-fill',
             'items': items,
             **context,
         },
