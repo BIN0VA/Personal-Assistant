@@ -26,6 +26,12 @@
                 >
                     Delete
                 </a>
+
+                <div>
+                    {% for tag in note.tags.all %}
+                        <span class="badge bg-secondary">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
             </li>
         {% endfor %}
     </ul>

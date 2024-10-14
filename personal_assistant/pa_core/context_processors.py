@@ -3,7 +3,7 @@ from django.urls import reverse
 
 
 def global_context(request: WSGIRequest) -> dict:
-    entity_types = ('contacts', 'notes')
+    entity_types = ('contacts', 'notes', 'tags')
 
     if request.GET.get('query'):
         active_entity_type = request.GET.get('type', entity_types[0]).lower()

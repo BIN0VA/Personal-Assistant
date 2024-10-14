@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 
 from pa_core.views import overview
+from pa_tag.models import Tag
 from .forms import NoteForm
 from .models import Note
 
@@ -14,35 +15,58 @@ from .models import Note
 def note(request):
     items = Note.objects.filter(user=request.user)
 
-    if (
-        (request.GET.get('type', 'contacts').lower() == 'notes') and
-        (query := request.GET.get('query'))
-    ):
-        if connection.vendor == 'postgresql':
-            items = items.annotate(search=SearchVector('name')) \
-                .filter(search=query)
-        else:
-            items = items.filter(name__icontains=query)
+    if query := request.GET.get('query'):
+        match request.GET.get('type', 'contacts').lower():
+            case 'notes':
+                if connection.vendor == 'postgresql':
+                    items = items.annotate(search=SearchVector('name')) \
+                        .filter(search=query)
+                else:
+                    items = items.filter(name__icontains=query)
+
+            case 'tags':
+                items = items.filter(tags__name__icontains=query)
     else:
         items = items.all()
 
-    return overview(request, 'note', items)
+    return overview(request, 'note', items, icon='sticky-fill')
 
 
 @method_decorator(login_required, name='dispatch')
 class CreateView(View):
     def get(self, request):
-        form = NoteForm()
-        return render(request, 'pa_note/add_note.html', {'form': form})
+        return render(
+            request,
+            'pa_note/add_note.html',
+            {
+                'form': NoteForm(),
+                'tags': Tag.objects.all(),
+            },
+        )
 
     def post(self, request):
-        form = NoteForm(request.POST)
-        if form.is_valid():
+        tags = Tag.objects
+
+        if (form := NoteForm(request.POST)).is_valid():
             note = form.save(commit=False)
             note.user = request.user
             note.save()
+
+            ids = request.POST.getlist('tags')
+
+            for tag in tags.filter(id__in=ids).iterator():
+                note.tags.add(tag)
+
             return redirect('pa_note:home')
-        return render(request, 'pa_note/add_note.html', {'form': form})
+
+        return render(
+            request,
+            'pa_note/add_note.html',
+            {
+                'form': form,
+                'tags': tags.all(),
+            },
+        )
 
 
 @method_decorator(login_required, name='dispatch')

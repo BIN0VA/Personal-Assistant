@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'pa_contacts',
     'pa_note',
     'pa_news',
+    'pa_tag',
 ]
 
 MIDDLEWARE = [

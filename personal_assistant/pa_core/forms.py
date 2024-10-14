@@ -15,7 +15,7 @@ class FormHelper:
         result = {'id': identifier, 'class': 'form-control'}
 
         if placeholder:
-            result['placeholder'] = placeholder
+            result['placeholder'] = f'E.g.: {placeholder}'
 
         return result
 
