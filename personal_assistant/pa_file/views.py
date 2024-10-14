@@ -7,9 +7,10 @@ from .models import File
 
 
 @login_required
-def upload_file(request):
+def upload(request):
     if request.method == 'POST':
         form = PaFileUploadForm(request.POST, request.FILES)
+
         if form.is_valid():
             uploaded_file = form.save(False)
 
@@ -21,6 +22,7 @@ def upload_file(request):
             return redirect('pa_file:home')
     else:
         form = PaFileUploadForm()
+
     return render(request, 'pa_file/upload.html', {'form': form})
 
 

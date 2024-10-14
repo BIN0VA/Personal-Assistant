@@ -1,21 +1,23 @@
 from cloudinary.models import CloudinaryField
-from django.db import models
+from django.db.models import CASCADE, CharField, DateTimeField, ForeignKey, \
+    Model
 from django.contrib.auth.models import User
 
 
-class File(models.Model):
-    CATEGORY_CHOICES = [
+class File(Model):
+    CATEGORIES = [
         ('image', 'Image'),
         ('document', 'Document'),
         ('video', 'Video'),
         ('other', 'Other'),
     ]
+
     file = CloudinaryField('file')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    uploaded_at = DateTimeField(auto_now_add=True)
+    category = CharField(max_length=50, choices=CATEGORIES)
 
     # Прив'язка до користувача
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = ForeignKey(User, CASCADE)
 
     def __str__(self):
         return f'{self.file.url.split("/")[-1]} ({self.user.username})'

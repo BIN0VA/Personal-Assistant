@@ -1,0 +1,8 @@
+<div class="btn-group" role="group">
+    {% for group, options, index in widget.optgroups %}
+        {% for option in options %}
+            <input type="radio" class="btn-check" name="{{ widget.name }}" value="{{ option.value }}" id="{{ option.attrs.id }}" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="{{ option.attrs.id }}">{{ option.label }}</label>
+        {% endfor %}
+    {% endfor %}
+</div>
