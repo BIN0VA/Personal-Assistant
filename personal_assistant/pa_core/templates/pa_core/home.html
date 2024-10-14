@@ -87,14 +87,18 @@
                                     <a
                                         class="nav-link"
                                         aria-current="page"
-                                        href="{% url 'pa_tag:tags' %}"
+                                        href="{% url 'pa_tag:home' %}"
                                     >
                                         Tags
                                     </a>
                                 </li>
                             </ul>
 
-                            <form action="{% url 'pa_core:search' %}" class="d-flex me-3" role="search">
+                            <form
+                                action="{% url 'pa_core:search' %}"
+                                class="d-flex me-3"
+                                role="search"
+                            >
                                 <div class="input-group">
                                     <div>
                                         <input
@@ -106,7 +110,7 @@
                                             aria-label="Search"
                                         />
                                     </div>
-                            
+
                                     <select name="type" class="form-select">
                                         {% for type, active in search.items %}
                                             <option
@@ -117,17 +121,11 @@
                                             </option>
                                         {% endfor %}
                                     </select>
-                            
-                                    <input
-                                        class="form-control"
-                                        type="search"
-                                        name="tag"
-                                        value="{{ request.GET.tag }}"
-                                        placeholder="Search Tags"
-                                        aria-label="Search Tags"
-                                    />
-                            
-                                    <button class="btn btn-outline-secondary" type="submit">
+
+                                    <button
+                                        class="btn btn-outline-secondary"
+                                        type="submit"
+                                    >
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>

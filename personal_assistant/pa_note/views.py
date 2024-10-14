@@ -12,21 +12,23 @@ from .models import Note
 
 @login_required
 def note(request):
-    items = Note.objects.filter(user=request.user).prefetch_related('tags')
+    items = Note.objects.filter(user=request.user)
 
-    if (
-        (request.GET.get('type', 'contacts').lower() == 'notes') and
-        (query := request.GET.get('query'))
-    ):
-        if connection.vendor == 'postgresql':
-            items = items.annotate(search=SearchVector('name')).filter(search=query)
-        else:
-            items = items.filter(name__icontains=query)
+    if query := request.GET.get('query'):
+        match request.GET.get('type', 'contacts').lower():
+            case 'notes':
+                if connection.vendor == 'postgresql':
+                    items = items.annotate(search=SearchVector('name')) \
+                        .filter(search=query)
+                else:
+                    items = items.filter(name__icontains=query)
 
-    if tag_query := request.GET.get('tag'):
-        items = items.filter(tags__name__icontains=tag_query)
+            case 'tags':
+                items = items.filter(tags__name__icontains=query)
+    else:
+        items = items.all()
 
-        return overview(request, 'note', items)
+    return overview(request, 'note', items)
 
 
 @method_decorator(login_required, name='dispatch')

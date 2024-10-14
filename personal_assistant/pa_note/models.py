@@ -3,6 +3,7 @@ from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, Fo
 
 from pa_tag.models import Tag
 
+
 class Note(Model):
     name = CharField(max_length=50, null=False)
     description = CharField(max_length=150, null=True)
