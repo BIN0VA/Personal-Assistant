@@ -131,11 +131,6 @@
                                 </div>
                             </form>
 
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
-                            </form>
-
                             <div class="dropdown text-end">
                                 <button
                                     class="btn dropdown-toggle d-flex align-items-center"
@@ -225,6 +220,25 @@
             crossorigin="anonymous"
         ></script>
 
-        {% block footer %}{% endblock %}
+        {% block footer %}
+            <script>
+                (() => {
+                    'use strict'
+
+                    const forms = document.querySelectorAll('.needs-validation')
+
+                    Array.from(forms).forEach(form => {
+                        form.addEventListener('submit', event => {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+                })()
+            </script>
+        {% endblock %}
     </body>
 </html>
