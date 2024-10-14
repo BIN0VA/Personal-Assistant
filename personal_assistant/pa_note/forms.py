@@ -11,7 +11,7 @@ class NoteForm(ModelForm):
         required=True,
         widget=TextInput(FormHelper.attributes(
             'name',
-            'E.g.: Find a birthday present for my best friend',
+            'Find a birthday present for my best friend',
         )),
     )
 
@@ -20,8 +20,8 @@ class NoteForm(ModelForm):
         required=False,
         widget=Textarea(FormHelper.attributes(
             'description',
-            'E.g.: Consider getting a special book, a personalized keepsake, '
-            'or tickets to a game of his favorite team. Think about what she '
+            'Consider getting a special book, a personalized keepsake, or '
+            'tickets to a game of his favorite team. Think about what she '
             'loves and what would make his day memorable.',
         )),
     )

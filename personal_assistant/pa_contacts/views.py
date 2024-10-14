@@ -80,8 +80,9 @@ def main(request):
             'upcoming_birthdays': sorted_contacts,
             'days': days,
             'tabs': tabs,
+            'icon': 'person-fill',
         },
-        'Contacts',
+        title='Contacts',
     )
 
 

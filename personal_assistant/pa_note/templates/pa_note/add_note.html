@@ -27,8 +27,20 @@
 
         <div>
             {% for tag in tags %}
-                <input type="checkbox" class="btn-check" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}" autocomplete="off" />
-                <label class="btn btn-outline-primary" for="tag-{{ tag.id }}">{{ tag.name }}</label>
+                <input
+                    type="checkbox"
+                    name="tags"
+                    value="{{ tag.id }}"
+                    id="tag-{{ tag.id }}"
+                    class="btn-check"
+                    autocomplete="off"
+                />
+                <label
+                    for="tag-{{ tag.id }}"
+                    class="btn btn-outline-primary"
+                >
+                    {{ tag.name }}
+                </label>
             {% endfor %}
         </div>
     </div>
