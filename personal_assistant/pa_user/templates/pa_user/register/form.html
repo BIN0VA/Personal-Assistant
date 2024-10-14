@@ -1,0 +1,47 @@
+{% extends 'pa_user/login.html' %}
+
+{% block fields %}
+    <div class="form-floating mb-3">
+        {{ form.email }}
+
+        <label for="email">E-mail</label>
+
+        {% if form.errors.email %}
+            <div id="email-error" class="invalid-feedback">
+                {{ form.errors.email }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="form-floating mb-3">
+        {{ form.password1 }}
+
+        <label for="password">Password</label>
+
+        {% if form.errors.password1 %}
+            <div id="password-error" class="invalid-feedback">
+                {{ form.errors.password1 }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="form-floating mb-3">
+        {{ form.password2 }}
+
+        <label for="repeat-password">Repeat password</label>
+
+        {% if form.errors.password2 %}
+            <div id="repeat-password-error" class="invalid-feedback">
+                {{ form.errors.password2 }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block button %}Sign up{% endblock %}
+
+{% block link %}
+    Already have an account?
+
+    <a href="{% url 'pa_user:login' %}">Sign in</a>
+{% endblock %}

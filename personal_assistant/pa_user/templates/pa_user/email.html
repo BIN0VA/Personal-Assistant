@@ -1,0 +1,8 @@
+{% autoescape off %}
+    <p>Hi {{ user.username }},</p>
+
+    {% block content %}{% endblock %}
+
+    <p>Thanks,</p>
+    <p>The {{ project_name }} Team</p>
+{% endautoescape %}

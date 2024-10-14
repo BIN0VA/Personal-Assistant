@@ -9,7 +9,7 @@
             <div class="col-md-7">
                 <h1 class="display-4 fw-bold">
                     <i class="bi bi-clipboard-data"></i>
-                    Personal Assistant
+                    {{ project_name }}
                 </h1>
                 <p class="fs-5">
                     It assists you in organizing the phone book, creating notes,
@@ -48,37 +48,51 @@
                                 {% endif %}
                             </div>
 
-                            <div class="form-floating mb-3">
-                                {{ form.password }}
+                            {% block fields %}
+                                <div class="form-floating mb-3">
+                                    {{ form.password }}
 
-                                <label for="password">Password</label>
+                                    <label for="password">Password</label>
 
-                                {% if form.errors.password %}
-                                    <div
-                                        id="password-error"
-                                        class="invalid-feedback"
-                                    >
-                                        {{ form.errors.password }}
-                                    </div>
-                                {% endif %}
-                            </div>
+                                    {% if form.errors.password %}
+                                        <div
+                                            id="password-error"
+                                            class="invalid-feedback"
+                                        >
+                                            {{ form.errors.password }}
+                                        </div>
+                                    {% endif %}
+                                </div>
 
-                            <div class="mb-3">
-                                <a href="{% url 'pa_user:reset' %}">
-                                    Forgot Password?
-                                </a>
-                            </div>
+                                <div class="mb-3">
+                                    <a href="{% url 'pa_user:reset' %}">
+                                        Forgot Password?
+                                    </a>
+                                </div>
+                            {% endblock %}
 
                             <input
                                 type="hidden"
                                 name="next"
                                 value="{% url 'pa_core:home' %}"
-                            >
+                            />
                         {% endblock %}
 
                         <button type="submit" class="btn btn-primary w-100">
                             {% block button %}Sign in{% endblock %}
                         </button>
+
+                        <hr class="my-4" />
+
+                        <small class="text-body-secondary d-block text-center">
+                            {% block link %}
+                                Do not have account?
+
+                                <a href="{% url 'pa_user:register' %}">
+                                    Sign up
+                                </a>
+                            {% endblock %}
+                        </small>
                     </form>
                 {% endblock %}
             </div>
