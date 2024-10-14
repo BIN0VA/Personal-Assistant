@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 
 from pa_core.views import overview
+from pa_tag.models import Tag
 from .forms import NoteForm
 from .models import Note
 
@@ -34,17 +35,38 @@ def note(request):
 @method_decorator(login_required, name='dispatch')
 class CreateView(View):
     def get(self, request):
-        form = NoteForm()
-        return render(request, 'pa_note/add_note.html', {'form': form})
+        return render(
+            request,
+            'pa_note/add_note.html',
+            {
+                'form': NoteForm(),
+                'tags': Tag.objects.all(),
+            },
+        )
 
     def post(self, request):
-        form = NoteForm(request.POST)
-        if form.is_valid():
+        tags = Tag.objects
+
+        if (form := NoteForm(request.POST)).is_valid():
             note = form.save(commit=False)
             note.user = request.user
             note.save()
+
+            ids = request.POST.getlist('tags')
+
+            for tag in tags.filter(id__in=ids).iterator():
+                note.tags.add(tag)
+
             return redirect('pa_note:home')
-        return render(request, 'pa_note/add_note.html', {'form': form})
+
+        return render(
+            request,
+            'pa_note/add_note.html',
+            {
+                'form': form,
+                'tags': tags.all(),
+            },
+        )
 
 
 @method_decorator(login_required, name='dispatch')

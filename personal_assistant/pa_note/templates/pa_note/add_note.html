@@ -2,6 +2,36 @@
 
 {% block title %}Add note{% endblock %}
 
-{% block form %}{{ form.as_p }}{% endblock %}
+{% block form %}
+    <div class="mb-3">
+        <label for="name">Name</label>
+        {{ form.name }}
+        {% if form.errors.name %}
+            <div id="name-error" class="invalid-feedback">
+                {{ form.errors.name }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="description">Description</label>
+        {{ form.description }}
+        {% if form.errors.description %}
+            <div id="description-error" class="invalid-feedback">
+                {{ form.errors.description }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label>Tags</label>
+
+        <div>
+            {% for tag in tags %}
+                <input type="checkbox" class="btn-check" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}" autocomplete="off" />
+                <label class="btn btn-outline-primary" for="tag-{{ tag.id }}">{{ tag.name }}</label>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
 
 {% block button %}Save{% endblock %}
