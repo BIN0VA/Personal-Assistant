@@ -5,16 +5,19 @@ from django.contrib.auth.models import User
 
 
 class File(Model):
-    CATEGORIES = [
+    CATEGORIES = (
         ('image', 'Image'),
-        ('document', 'Document'),
-        ('video', 'Video'),
-        ('other', 'Other'),
-    ]
+        ('text', 'Document'),
+        ('music', 'Audio'),
+        ('play', 'Video'),
+        ('zip', 'Archive'),
+        ('code', 'Code'),
+        ('unknown', 'Unknown'),
+    )
 
     file = CloudinaryField('file')
     uploaded_at = DateTimeField(auto_now_add=True)
-    category = CharField(max_length=50, choices=CATEGORIES)
+    category = CharField(max_length=10, choices=CATEGORIES)
 
     # Прив'язка до користувача
     user = ForeignKey(User, CASCADE)

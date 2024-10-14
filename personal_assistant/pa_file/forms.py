@@ -1,8 +1,8 @@
 from django.forms import (
+    ChoiceField,
     FileField,
     FileInput,
     ModelForm,
-    MultipleChoiceField,
     RadioSelect,
 )
 
@@ -17,7 +17,7 @@ class PaRadioSelect(RadioSelect):
 class PaFileUploadForm(ModelForm):
     file = FileField(widget=FileInput(FormHelper.attributes('file')))
 
-    category = MultipleChoiceField(
+    category = ChoiceField(
         choices=File.CATEGORIES,
         widget=PaRadioSelect({'class': 'btn-group'}),
     )

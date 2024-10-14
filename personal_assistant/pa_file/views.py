@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required
+from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from pa_core.views import overview
+from pa_core.views import overview, Response
 from .forms import PaFileUploadForm
 from .models import File
 
 
 @login_required
-def upload(request):
+def upload(request: WSGIRequest) -> Response:
     if request.method == 'POST':
         form = PaFileUploadForm(request.POST, request.FILES)
 
@@ -27,16 +29,22 @@ def upload(request):
 
 
 @login_required
-def main(request):
-    # Показуємо тільки файли поточного користувача
-    files = File.objects.filter(user=request.user)
+def main(request: WSGIRequest, category: str = None) -> HttpResponse:
+    categories = {key: value for key, value in File.CATEGORIES}
+    filters = {'user': request.user}
 
-    return overview(request, 'file', files, icon='file-earmark-fill')
+    if category:
+        for key, value in File.CATEGORIES:
+            if value.lower() == category:
+                filters['category'] = key
+                break
 
+    files = File.objects.filter(**filters)
 
-@login_required
-def filter_files_by_category(request, category):
-    # Фільтрація тільки файлів користувача
-    files = File.objects.filter(user=request.user, category=category)
-
-    return overview(request, 'file', files, icon='file-earmark-fill')
+    return overview(
+        request,
+        'file',
+        {file.file.url: categories[file.category] for file in files},
+        {'types': categories.values()},
+        icon='file-earmark-fill',
+    )
