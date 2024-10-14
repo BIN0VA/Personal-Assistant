@@ -1,0 +1,9 @@
+{% extends 'pa_core/form.html' %}
+
+{% block title %}Upload file{% endblock %}
+
+{% block attributes %}enctype="multipart/form-data"{% endblock %}
+
+{% block form %}{{ form.as_p }}{% endblock %}
+
+{% block button %}Upload{% endblock %}

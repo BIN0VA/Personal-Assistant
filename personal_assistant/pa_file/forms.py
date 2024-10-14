@@ -1,7 +1,11 @@
-from django import forms
-from .models import PaUploadedFile
+from django.forms import ModelForm
 
-class PaFileUploadForm(forms.ModelForm):
+from .models import File
+
+
+class PaFileUploadForm(ModelForm):
     class Meta:
-        model = PaUploadedFile
-        fields = ['file', 'category']  # Користувач не вказується, він буде прив'язаний у views.py
+        model = File
+
+        # Користувач не вказується, він буде прив'язаний у views.py
+        fields = ('file', 'category')

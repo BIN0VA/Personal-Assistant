@@ -27,6 +27,6 @@ urlpatterns = [
     path('note/', include('pa_note.urls')),
     path('news/', include('pa_news.urls')),
     path('tag/', include('pa_tag.urls')),
-    path('admin/', admin.site.urls),
     path('file/', include('pa_file.urls')),
+    path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

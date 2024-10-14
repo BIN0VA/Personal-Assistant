@@ -9,7 +9,12 @@
         </div>
     {% endif %}
 
-    <form method="post" class="needs-validation" novalidate>
+    <form
+        method="post"
+        class="needs-validation"
+        novalidate
+        {% block attributes %}{% endblock %}
+    >
         {% csrf_token %}
 
         {% block form %}{% endblock %}

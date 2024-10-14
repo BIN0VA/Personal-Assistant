@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'pa_note',
     'pa_news',
     'pa_tag',
+    'pa_file',
 ]
 
 MIDDLEWARE = [

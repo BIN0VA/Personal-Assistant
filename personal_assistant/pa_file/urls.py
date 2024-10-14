@@ -1,8 +1,11 @@
 from django.urls import path
-from . import views
+
+from .views import filter_files_by_category, main, upload_file
+
+app_name = 'pa_file'
 
 urlpatterns = [
-    path('upload/', views.upload_file, name='upload_file'),
-    path('files/', views.file_list, name='file_list'),
-    path('files/<str:category>/', views.filter_files_by_category, name='filter_files'),
+    path('', main, name='home'),
+    path('upload/', upload_file, name='create'),
+    path('<str:category>/', filter_files_by_category, name='type'),
 ]
