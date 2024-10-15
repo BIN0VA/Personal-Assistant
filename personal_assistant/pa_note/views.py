@@ -15,7 +15,7 @@ from .models import Note
 
 
 @login_required
-def note(request: WSGIRequest):
+def main(request: WSGIRequest):
     items = Note.objects.filter(user=request.user)
 
     if query := request.GET.get('query'):
@@ -40,7 +40,7 @@ class CreateView(View):
     def get(self, request: WSGIRequest):
         return render(
             request,
-            'pa_note/add_note.html',
+            'pa_note/add.html',
             {
                 'form': NoteForm(),
                 'tags': Tag.objects.all(),
@@ -64,7 +64,7 @@ class CreateView(View):
 
         return render(
             request,
-            'pa_note/add_note.html',
+            'pa_note/add.html',
             {
                 'form': form,
                 'tags': tags.all(),
@@ -85,10 +85,15 @@ class UpdateView(View):
     def get(self, request: WSGIRequest, note_id: int):
         note = get_object_or_404(Note, pk=note_id, user=request.user)
         form = NoteForm(instance=note)
+
         return render(
             request,
-            'pa_note/edit_note.html',
-            {'form': form, 'note': note, 'tags': Tag.objects.all()},
+            'pa_note/edit.html',
+            {
+                'form': form,
+                'note': note,
+                'tags': Tag.objects.all(),
+            },
         )
 
     def post(self, request: WSGIRequest, note_id: int) -> Response:
@@ -108,8 +113,12 @@ class UpdateView(View):
 
         return render(
             request,
-            'pa_note/edit_note.html',
-            {'form': form, 'note': note, 'tags': tags.all()},
+            'pa_note/edit.html',
+            {
+                'form': form,
+                'note': note,
+                'tags': tags.all(),
+            },
         )
 
 

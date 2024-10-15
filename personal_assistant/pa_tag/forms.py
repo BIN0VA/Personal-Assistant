@@ -18,4 +18,4 @@ class TagForm(ModelForm):
 
     class Meta:
         model = Tag
-        fields = ['name']
+        fields = ('name',)

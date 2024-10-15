@@ -19,14 +19,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-
 urlpatterns = [
     path('', include('pa_core.urls')),
-    path('contact/', include('pa_contacts.urls')),
-    path('user/', include('pa_user.urls')),
-    path('note/', include('pa_note.urls')),
-    path('news/', include('pa_news.urls')),
-    path('tag/', include('pa_tag.urls')),
-    path('file/', include('pa_file.urls')),
+    *[
+        path(
+            '{}{}/'.format(
+                name.removeprefix('pa_').removesuffix('s'),
+                's' if name == 'pa_news' else '',
+            ),
+            include(f'{name}.urls'),
+        )
+        for name in settings.PROJECT_APPS
+    ],
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
