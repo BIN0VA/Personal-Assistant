@@ -75,10 +75,8 @@ def search_section(request: WSGIRequest) -> str:
         active_entity_type = entity_types[0]
 
     return {
-        'search': {
-            current_entity_type: current_entity_type == active_entity_type
-            for current_entity_type in entity_types
-        },
+        current_entity_type: current_entity_type == active_entity_type
+        for current_entity_type in entity_types
     }
 
 
