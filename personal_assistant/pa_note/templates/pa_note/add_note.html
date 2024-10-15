@@ -1,6 +1,6 @@
 {% extends 'pa_core/form.html' %}
 
-{% block title %}Add note{% endblock %}
+{% block title %}Create note{% endblock %}
 
 {% block form %}
     <div class="mb-3">
@@ -29,11 +29,11 @@
             <div>
                 {% for tag in tags %}
                     <input type="checkbox" name="tags" value="{{ tag.id }}" id="tag-{{ tag.id }}" class="btn-check" autocomplete="off" />
-                    <label for="tag-{{ tag.id }}" class="btn btn-outline-primary">{{ tag.name }}</label>
+                    <label for="tag-{{ tag.id }}" class="btn btn-outline-secondary">{{ tag.name }}</label>
                 {% endfor %}
             </div>
         </div>
     {% endif %}
 {% endblock %}
 
-{% block button %}Save{% endblock %}
+{% block button %}Add note{% endblock %}
