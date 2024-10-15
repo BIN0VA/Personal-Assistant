@@ -30,24 +30,18 @@
         />
     </head>
     <body class="d-flex flex-column h-100">
+        {% url 'pa_core:home' as root %}
+
         <div class="container mb-5 flex-shrink-0">
             {% block navigation %}
                 <nav class="navbar navbar-expand-lg bg-light rounded mt-3">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="{% url 'pa_core:home' %}">
+                        <a class="navbar-brand" href="{{ root }}">
                             <i class="bi bi-clipboard-data"></i>
                             {{ project_name }}
                         </a>
 
-                        <button
-                            class="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                        >
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
@@ -57,108 +51,46 @@
                         >
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_core:home' %}"
-                                    >
-                                        Home
-                                    </a>
+                                    <a class="nav-link{% if request.path == root %} active{% endif %}" aria-current="page" href="{{ root }}">Home</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_contacts:home' %}"
-                                    >
-                                        Contacts
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_note:home' %}"
-                                    >
-                                        Notes
-                                    </a>
-                                </li>
-                                <li class="nav-item"></li>
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_tag:home' %}"
-                                    >
-                                        Tags
-                                    </a>
-                                </li>
-                                <li class="nav-item"></li>
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_file:home' %}"
-                                    >
-                                        Files
-                                    </a>
-                                </li>
+
+                                {% for link, item in main_menu.items %}
+                                    <li class="nav-item">
+                                        <a class="{{ item.classes }}" aria-current="page" href="{{ link }}">{{ item.label }}</a>
+                                    </li>
+                                {% endfor %}
                             </ul>
 
-                            <form
-                                action="{% url 'pa_core:search' %}"
-                                class="d-flex me-3"
-                                role="search"
-                            >
+                            <form action="{% url 'pa_core:search' %}" class="d-flex me-3" role="search">
                                 <div class="input-group">
                                     <div>
-                                        <input
-                                            class="form-control rounded-end-0"
-                                            type="search"
-                                            name="query"
-                                            value="{{ request.GET.query }}"
-                                            placeholder="Search..."
-                                            aria-label="Search"
-                                        />
+                                        <input class="form-control rounded-end-0" type="search" name="query" value="{{ request.GET.query }}" placeholder="Search..." aria-label="Search" />
                                     </div>
 
                                     <select name="type" class="form-select">
                                         {% for type, active in search.items %}
-                                            <option
-                                                value="{{ type }}"
-                                                {% if active %}selected{% endif %}
-                                            >
-                                                {{ type|title }}
-                                            </option>
+                                            <option value="{{ type }}"{% if active %} selected{% endif %}>{{ type|title }}</option>
                                         {% endfor %}
                                     </select>
 
-                                    <button
-                                        class="btn btn-outline-secondary"
-                                        type="submit"
-                                    >
+                                    <button class="btn btn-outline-secondary" type="submit">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                             </form>
 
                             <div class="dropdown text-end">
-                                <button
-                                    class="btn dropdown-toggle d-flex align-items-center"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
+                                <button class="btn dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-circle fs-4 me-2"></i>
                                     <span>{{ user }}</span>
                                 </button>
 
                                 <ul class="dropdown-menu text-small">
-                                    <li>
-                                        <a
-                                            href="{% url 'pa_file:home' %}"
-                                            class="dropdown-item"
-                                        >
-                                            My files
-                                        </a>
-                                    </li>
+                                    {% for link, item in user_menu.items %}
+                                        <li>
+                                            <a href="{{ link }}" class="{{ item.classes }}">My {{ item.label|lower }}</a>
+                                        </li>
+                                    {% endfor %}
 
                                     <li><hr class="dropdown-divider" /></li>
 

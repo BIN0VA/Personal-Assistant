@@ -10,6 +10,7 @@ The user management feature serves as the foundation for all other functionaliti
 In addition to data segregation, the application includes the essential user authentication processes: registration, login, and password recovery. User registration is moderated, adding a layer of protection against spam accounts and ensuring that only legitimate users gain access to the system. This moderation helps maintain the integrity and security of the application.
 For non-registered users, access to the application is highly restricted, with most features unavailable. However, once a user completes registration and gains approval, they are granted access to the full suite of functionalities, unlocking the application's broad capabilities and enhancing their ability to manage contacts, notes, files, and more efficiently. This user-centered approach ensures a secure and tailored experience for every individual.'''
     icon = 'people-fill'
+    not_in_main_menu = True
 
     def ready(self) -> None:
         from . import signals  # noqa
