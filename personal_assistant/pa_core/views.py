@@ -68,9 +68,13 @@ def home(request: WSGIRequest) -> HttpResponse:
 
     for app_name in settings.PROJECT_APPS:
         app_config = apps.get_app_config(app_name)
+        description = app_config.description.split('\n')
 
-        app_configs[app_config.verbose_name] = app_config.description \
-            .replace('\n', '</p><p>')
+        app_configs[app_config.verbose_name] = {
+            'icon': app_config.icon if hasattr(app_config, 'icon') else None,
+            'summary': description[0],
+            'full': '</p><p>'.join(description[1:]),
+        }
 
     return render(request, 'pa_core/home.html', {'apps': app_configs})
 

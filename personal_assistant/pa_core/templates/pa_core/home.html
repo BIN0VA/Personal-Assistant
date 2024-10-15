@@ -237,8 +237,22 @@
 
                 <main class="mt-4">
                     {% block content %}
-                        It assists you in organizing the phone book, creating
-                        notes, and more.
+                        <p>This web application offers a comprehensive suite of features for managing contacts, notes, and files, all integrated with a powerful tagging system for enhanced organization and search capabilities. It also provides up-to-date news and currency exchange rates, ensuring users have access to real-time information. With robust user authentication and personalized data access, the application ensures a secure and customized experience, while utilizing cloud storage and caching for optimal performance.</p>
+
+                        <div class="row row-cols-3 mt-4 text-center g-4">
+                            {% for title, description in apps.items %}
+                                <div class="col">
+                                    <div class="shadow rounded-4 pt-4 pb-3 px-4 h-100">
+                                        {% if description.icon %}
+                                            <i class="bi bi-{{ description.icon }} fs-1"></i>
+                                        {% endif %}
+
+                                        <h2>{{ title }}</h2>
+                                        <p>{{ description.summary }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
 
                         <div class="row mt-5">
                             <div class="col-3">
@@ -251,8 +265,8 @@
                             <div class="col-9">
                                 <div data-bs-spy="scroll" data-bs-target="#introduction" data-bs-smooth-scroll="true" tabindex="0" style="height: 300px; overflow: auto;">
                                     {% for title, description in apps.items %}
-                                        <h2 id="list-item-{{ forloop.counter }}">{{ title }}</h4>
-                                        <p>{{ description|safe }}</p>
+                                        <h3 id="list-item-{{ forloop.counter }}">{{ title }}</h4>
+                                        <p>{{ description.full|safe }}</p>
                                     {% endfor %}
                                 </div>
                             </div>

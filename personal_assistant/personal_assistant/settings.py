@@ -46,6 +46,8 @@ PROJECT_APPS = [
     'pa_tag',
     'pa_note',
     'pa_file',
+    'pa_news',
+    'pa_user',
 ]
 
 INSTALLED_APPS = [
@@ -56,9 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pa_core',
-    'pa_user',
     *PROJECT_APPS,
-    'pa_news',
 ]
 
 MIDDLEWARE = [
