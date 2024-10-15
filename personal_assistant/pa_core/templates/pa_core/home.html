@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,8 +29,8 @@
             type="image/svg+xml"
         />
     </head>
-    <body>
-        <div class="container mb-5">
+    <body class="d-flex flex-column h-100">
+        <div class="container mb-5 flex-shrink-0">
             {% block navigation %}
                 <nav class="navbar navbar-expand-lg bg-light rounded mt-3">
                     <div class="container-fluid">
@@ -277,6 +277,15 @@
                 </main>
             </div>
         </div>
+
+        <footer class="footer mt-auto py-3 bg-body-tertiary">
+            <div class="container text-center">
+                <span class="text-body-secondary">
+                    &copy; 2024 {{ project_team|safe }}.
+                    Powered by creativity and love.
+                </span>
+            </div>
+        </footer>
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
