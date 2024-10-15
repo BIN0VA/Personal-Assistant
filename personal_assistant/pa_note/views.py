@@ -1,18 +1,21 @@
-from django.contrib.postgres.search import SearchVector
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import success
+from django.contrib.postgres.search import SearchVector
+from django.core.handlers.wsgi import WSGIRequest
 from django.db import connection
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
 
-from pa_core.views import overview
+from pa_core.views import overview, Response
 from pa_tag.models import Tag
 from .forms import NoteForm
 from .models import Note
 
 
 @login_required
-def note(request):
+def note(request: WSGIRequest):
     items = Note.objects.filter(user=request.user)
 
     if query := request.GET.get('query'):
@@ -34,7 +37,7 @@ def note(request):
 
 @method_decorator(login_required, name='dispatch')
 class CreateView(View):
-    def get(self, request):
+    def get(self, request: WSGIRequest):
         return render(
             request,
             'pa_note/add_note.html',
@@ -44,7 +47,7 @@ class CreateView(View):
             },
         )
 
-    def post(self, request):
+    def post(self, request: WSGIRequest) -> Response:
         tags = Tag.objects
 
         if (form := NoteForm(request.POST)).is_valid():
@@ -71,40 +74,51 @@ class CreateView(View):
 
 @method_decorator(login_required, name='dispatch')
 class DeleteView(View):
-    def post(self, request, pk):
-        note = get_object_or_404(Note, pk=pk, user=request.user)
+    def post(self, request: WSGIRequest, note_id: int):
+        note = get_object_or_404(Note, pk=note_id, user=request.user)
         note.delete()
         return redirect('pa_note:home')
 
 
 @method_decorator(login_required, name='dispatch')
 class UpdateView(View):
-    def get(self, request, pk):
-        note = get_object_or_404(Note, pk=pk, user=request.user)
+    def get(self, request: WSGIRequest, note_id: int):
+        note = get_object_or_404(Note, pk=note_id, user=request.user)
         form = NoteForm(instance=note)
         return render(
             request,
             'pa_note/edit_note.html',
-            {'form': form, 'note': note},
+            {'form': form, 'note': note, 'tags': Tag.objects.all()},
         )
 
-    def post(self, request, pk):
-        note = get_object_or_404(Note, pk=pk, user=request.user)
+    def post(self, request: WSGIRequest, note_id: int) -> Response:
+        note = get_object_or_404(Note, pk=note_id, user=request.user)
         form = NoteForm(request.POST, instance=note)
+        tags = Tag.objects
+
         if form.is_valid():
             form.save()
+
+            ids = request.POST.getlist('tags')
+
+            for tag in tags.filter(id__in=ids).iterator():
+                note.tags.add(tag)
+
             return redirect('pa_note:home')
+
         return render(
             request,
             'pa_note/edit_note.html',
-            {'form': form, 'note': note},
+            {'form': form, 'note': note, 'tags': tags.all()},
         )
 
 
-@method_decorator(login_required, name='dispatch')
-class DoneUpdateView(View):
-    def post(self, request, pk):
-        note = get_object_or_404(Note, pk=pk, user=request.user)
-        note.done = True
-        note.save()
-        return redirect('pa_note:home')
+@login_required
+def done(request: WSGIRequest, note_id: int) -> HttpResponsePermanentRedirect:
+    note = get_object_or_404(Note, pk=note_id, user=request.user)
+    note.done = True
+    note.save()
+
+    success(request, f'The {note.name} note has been marked as completed.')
+
+    return redirect('pa_note:home')

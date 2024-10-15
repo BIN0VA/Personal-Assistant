@@ -22,28 +22,18 @@
             </div>
         {% endif %}
     </div>
-    <div class="mb-3">
-        <label>Tags</label>
 
-        <div>
-            {% for tag in tags %}
-                <input
-                    type="checkbox"
-                    name="tags"
-                    value="{{ tag.id }}"
-                    id="tag-{{ tag.id }}"
-                    class="btn-check"
-                    autocomplete="off"
-                />
-                <label
-                    for="tag-{{ tag.id }}"
-                    class="btn btn-outline-primary"
-                >
-                    {{ tag.name }}
-                </label>
-            {% endfor %}
+    {% if tags %}
+        <div class="mb-3">
+            <label>Tags</label>
+            <div>
+                {% for tag in tags %}
+                    <input type="checkbox" name="tags" value="{{ tag.id }}" id="tag-{{ tag.id }}" class="btn-check" autocomplete="off" />
+                    <label for="tag-{{ tag.id }}" class="btn btn-outline-primary">{{ tag.name }}</label>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block button %}Save{% endblock %}
