@@ -1,0 +1,101 @@
+{% extends 'pa_core/form.html' %}
+
+{% block navigation %}{% endblock %}
+{% block title_wrapper %}{% endblock %}
+
+{% block content %}
+    <div class="container col-lg-10">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h1 class="display-4 fw-bold">
+                    <i class="bi bi-clipboard-data"></i>
+                    {{ project_name }}
+                </h1>
+                <p class="fs-5">
+                    It assists you in organizing the phone book, creating notes,
+                    and more. But you need to log in before you can use all
+                    these incredible functions.
+                </p>
+            </div>
+            <div class="col">
+                {% block main_content %}
+                    {% if form.errors and form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <form
+                        method="post"
+                        class="needs-validation p-4 p-lg-5 border rounded-3 bg-body-tertiary"
+                        novalidate
+                    >
+                        {% csrf_token %}
+
+                        {% block form %}
+                            <div class="form-floating mb-3">
+                                {{ form.username }}
+
+                                <label for="username">Username</label>
+
+                                {% if form.errors.username %}
+                                    <div
+                                        id="username-error"
+                                        class="invalid-feedback"
+                                    >
+                                        {{ form.errors.username }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {% block fields %}
+                                <div class="form-floating mb-3">
+                                    {{ form.password }}
+
+                                    <label for="password">Password</label>
+
+                                    {% if form.errors.password %}
+                                        <div
+                                            id="password-error"
+                                            class="invalid-feedback"
+                                        >
+                                            {{ form.errors.password }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <a href="{% url 'pa_user:reset' %}">
+                                        Forgot Password?
+                                    </a>
+                                </div>
+                            {% endblock %}
+
+                            <input
+                                type="hidden"
+                                name="next"
+                                value="{% url 'pa_core:home' %}"
+                            />
+                        {% endblock %}
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            {% block button %}Sign in{% endblock %}
+                        </button>
+
+                        <hr class="my-4" />
+
+                        <small class="text-body-secondary d-block text-center">
+                            {% block link %}
+                                Do not have account?
+
+                                <a href="{% url 'pa_user:register' %}">
+                                    Sign up
+                                </a>
+                            {% endblock %}
+                        </small>
+                    </form>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

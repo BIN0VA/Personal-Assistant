@@ -1,0 +1,90 @@
+{% extends 'pa_core/overview.html' %}
+
+{% block items %}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for contact in items %}
+                    <div class="col" id="contact-{{ contact.id }}">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-person-fill"></i>
+                                    {{ contact.name }}
+                                </h5>
+
+                                <hr />
+
+                                <p class="card-text mb-1">
+                                    <i class="bi bi-telephone-fill"></i>
+                                    {{ contact.phone }}
+                                </p>
+
+                                {% if contact.email %}
+                                    <p class="card-text mb-1">
+                                        <i class="bi bi-envelope-at-fill"></i>
+                                        {{ contact.email }}
+                                    </p>
+                                {% endif %}
+
+                                {% if contact.address %}
+                                    <p class="card-text mb-1">
+                                        <i class="bi bi-house-fill"></i>
+                                        {{ contact.address }}
+                                    </p>
+                                {% endif %}
+
+                                {% if contact.birthday %}
+                                    <p class="card-text mb-1">
+                                        <i class="bi bi-cake2-fill"></i>
+                                        {{ contact.birthday }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <a href="{% url 'pa_contacts:edit' contact.id %}" role="button" class="btn btn-secondary">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+                                <a href="{% url 'pa_contacts:delete' contact.id %}" role="button" class="btn btn-danger">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center py-2">
+                        <i class="bi bi-cake2-fill"></i> Upcoming birthdays
+                    </h5>
+                    <ul class="nav nav-tabs card-header-tabs nav-fill">
+                        {% for days_value, text in tabs %}
+                            <li class="nav-item">
+                                <a href="?days={{ days_value }}" class="nav-link {% if days == days_value %}active{% endif %}" title="Next {{ days_value }} days">{{ text }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {% if upcoming_birthdays %}
+                    <div class="list-group list-group-flush">
+                        {% for contact in upcoming_birthdays %}
+                            <a href="#contact-{{ contact.id }}" class="list-group-item list-group-item-action">
+                                <span class="text-secondary">{{ contact.birthday|date:'F j' }}:</span>
+                                <span>{{ contact.name }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                        <div class="alert alert-warning mb-0 text-center" role="alert">No upcoming birthdays!</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

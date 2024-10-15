@@ -1,0 +1,26 @@
+{% extends 'pa_core/home.html' %}
+
+{% block title %}Form{% endblock %}
+
+{% block content %}
+    {% if form.errors and form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <form
+        method="post"
+        class="needs-validation"
+        novalidate
+        {% block attributes %}{% endblock %}
+    >
+        {% csrf_token %}
+
+        {% block form %}{% endblock %}
+
+        <button type="submit" class="btn btn-primary">
+            {% block button %}Submit{% endblock %}
+        </button>
+    </form>
+{% endblock %}

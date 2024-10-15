@@ -1,0 +1,49 @@
+{% extends 'pa_core/form.html' %}
+
+{% block title %}Create contact{% endblock %}
+
+{% block form %}
+    <div class="mb-3">
+        <label for="id_name" class="form-label">Name</label>
+        {{ form.name }}
+        {% if form.errors.name %}
+            <div class="invalid-feedback d-block">{{ form.errors.name.0 }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="id_address" class="form-label">Address</label>
+        {{ form.address }}
+        {% if form.errors.address %}
+            <div class="invalid-feedback d-block">{{ form.errors.address }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="id_phone" class="form-label">Phone number</label>
+        {{ form.phone }}
+        {% if form.errors.phone %}
+            <div class="invalid-feedback d-block">{{ form.errors.phone.0 }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        {{ form.email }}
+        {% for error in form.email.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        <label for="id_birthday" class="form-label">Birthday</label>
+        {{ form.birthday }}
+        {% if form.errors.birthday %}
+            <div class="invalid-feedback d-block">{{ form.errors.birthday.0 }}</div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block button %}Add contact{% endblock %}
+
+{% block footer %}{% endblock %}

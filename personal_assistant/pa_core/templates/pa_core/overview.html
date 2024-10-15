@@ -1,0 +1,30 @@
+{% extends 'pa_core/home.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {% if url %}
+        <a href="{{ url }}" role="button" class="btn btn-success mb-3">
+            {% block label %}
+                <i class="bi bi-{{ icon }}"></i> Create
+            {% endblock %}
+        </a>
+    {% endif %}
+
+    {% if items %}
+        {% block items %}{% endblock %}
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">No {{ title }} Found!</h4>
+            <p>
+                You currently have no {{ title|lower }}.
+                {% if url %}Add your first item!{% endif %}
+            </p>
+
+            {% if url %}
+                <hr />
+                <p class="mb-0">Press the "Create" button to get started!</p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

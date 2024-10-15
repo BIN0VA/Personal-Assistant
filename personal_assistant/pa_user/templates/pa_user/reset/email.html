@@ -1,0 +1,14 @@
+{% extends 'pa_user/email.html' %}
+
+{% block content %}
+    <p>
+        You requested a password reset for your account.
+        Please follow this link to set a new password:
+    </p>
+    <p>
+        <a href="{{ protocol }}://{{ domain }}{% url 'pa_user:confirm' uidb64=uid token=token %}">
+            Set new password
+        </a>
+    </p>
+    <p>If you did not request a password reset, please ignore this email.</p>
+{% endblock %}
