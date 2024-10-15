@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Any
 from urllib.parse import urlencode
 
+from django.apps import apps
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.forms import ModelForm
@@ -62,7 +64,15 @@ class FormView(ABC, View):
 
 @login_required
 def home(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'pa_core/home.html')
+    app_configs = {}
+
+    for app_name in settings.PROJECT_APPS:
+        app_config = apps.get_app_config(app_name)
+
+        app_configs[app_config.verbose_name] = app_config.description \
+            .replace('\n', '</p><p>')
+
+    return render(request, 'pa_core/home.html', {'apps': app_configs})
 
 
 @login_required

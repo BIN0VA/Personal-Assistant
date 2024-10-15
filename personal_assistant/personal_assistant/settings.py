@@ -41,6 +41,13 @@ ALLOWED_HOSTS = env(
 
 # Application definition
 
+PROJECT_APPS = [
+    'pa_contacts',
+    'pa_tag',
+    'pa_note',
+    'pa_file',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,11 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pa_core',
     'pa_user',
-    'pa_contacts',
-    'pa_note',
+    *PROJECT_APPS,
     'pa_news',
-    'pa_tag',
-    'pa_file',
 ]
 
 MIDDLEWARE = [

@@ -240,6 +240,24 @@
                         It assists you in organizing the phone book, creating
                         notes, and more.
 
+                        <div class="row mt-5">
+                            <div class="col-3">
+                                <div id="introduction" class="list-group">
+                                    {% for title, description in apps.items %}
+                                        <a class="list-group-item list-group-item-action" href="#list-item-{{ forloop.counter }}">{{ title }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div data-bs-spy="scroll" data-bs-target="#introduction" data-bs-smooth-scroll="true" tabindex="0" style="height: 300px; overflow: auto;">
+                                    {% for title, description in apps.items %}
+                                        <h2 id="list-item-{{ forloop.counter }}">{{ title }}</h4>
+                                        <p>{{ description|safe }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
                         {{ news }}
                     {% endblock %}
                 </main>
