@@ -8,6 +8,7 @@ from .views import (
     signout,
 )
 
+
 app_name = 'pa_user'
 url = 'reset-password/'
 

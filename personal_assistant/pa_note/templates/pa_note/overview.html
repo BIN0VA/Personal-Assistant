@@ -1,36 +1,38 @@
 {% extends 'pa_core/overview.html' %}
 
 {% block items %}
-    <ul>
+    <ul class="list-group">
         {% for note in items %}
-            <li>
-                {{ note.name }} - {{ note.description }} -
-                {% if note.done %}
-                    Done
-                {% else %}
-                    Not done
-                    <form
-                        action="{% url 'pa_note:done_note' note.id %}"
-                        method="post"
-                        style="display:inline;"
-                    >
-                        {% csrf_token %}
-                        <button type="submit">Mark as done</button>
-                    </form>
-                {% endif %}
-                <a href="{% url 'pa_note:edit_note' note.id %}">Edit</a>
+            <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center list-group-item-{% if note.done %}info{% else %}warning{% endif %}">
+                <div>
+                    <b>{{ note.name }}</b>
 
-                <a
-                    href="#"
-                    onclick="confirmDelete('{% url 'pa_note:delete_note' note.id %}'); return false;"
-                >
-                    Delete
-                </a>
+                    {% if note.description %}
+                        <div>{{ note.description }}</div>
+                    {% endif %}
+                </div>
 
                 <div>
                     {% for tag in note.tags.all %}
-                        <span class="badge bg-secondary">{{ tag.name }}</span>
+                        <span class="badge bg-secondary rounded-pill">{{ tag.name }}</span>
                     {% endfor %}
+                </div>
+
+                <div>
+                    {% if not note.done %}
+                        <a href="{% url 'pa_note:done' note.id %}" class="btn btn-primary">
+                            <i class="bi bi-check-square-fill"></i> Done
+                        </a>
+                    {% endif %}
+
+
+                    <a href="{% url 'pa_note:edit' note.id %}" class="btn btn-secondary">
+                        <i class="bi bi-pencil-fill"></i> Edit
+                    </a>
+
+                    <a href="#" onclick="confirmDelete('{% url 'pa_note:delete' note.id %}'); return false;" class="btn btn-danger">
+                        <i class="bi bi-trash-fill"></i> Delete
+                    </a>
                 </div>
             </li>
         {% endfor %}

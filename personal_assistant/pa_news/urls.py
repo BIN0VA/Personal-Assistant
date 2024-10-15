@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import bank, UpdateView
 
+
 app_name = 'pa_news'
 
 urlpatterns = [

@@ -40,4 +40,4 @@ class NoteForm(ModelForm):
 class NoteDoneForm(ModelForm):
     class Meta:
         model = Note
-        fields = ['done']
+        fields = ('done',)

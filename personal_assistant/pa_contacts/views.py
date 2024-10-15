@@ -37,6 +37,7 @@ def main(request):
 
     try:
         days = int(days_param)
+
         if days <= 0:
             days = 7
     except ValueError:
@@ -62,12 +63,15 @@ def main(request):
                 birth_month < today.month or
                 (birth_month == today.month and birth_day < today.day)
             ):
-                birthday_this_year = contact.birthday.replace(year=today.year + 1)
+                birthday_this_year = contact.birthday \
+                    .replace(year=today.year + 1)
             else:
                 birthday_this_year = contact.birthday.replace(year=today.year)
 
             if today <= birthday_this_year <= end_date:
-                upcoming_birthdays_filtered.append((birthday_this_year, contact))
+                upcoming_birthdays_filtered.append(
+                    (birthday_this_year, contact),
+                )
 
     upcoming_birthdays_filtered.sort(key=lambda x: x[0])
     sorted_contacts = [contact for _, contact in upcoming_birthdays_filtered]
@@ -90,14 +94,17 @@ def main(request):
 def create(request):
     if request.method == 'POST':
         form = ContactsForm(request.POST, user=request.user)
+
         if form.is_valid():
             contact = form.save(commit=False)
             contact.user = request.user
             contact.save()
-            return redirect('pa_contacts:home')
-        return render(request, 'pa_contacts/add_contact.html', {'form': form})
 
-    return render(request, 'pa_contacts/add_contact.html', {'form': ContactsForm()})
+            return redirect('pa_contacts:home')
+
+        return render(request, 'pa_contacts/add.html', {'form': form})
+
+    return render(request, 'pa_contacts/add.html', {'form': ContactsForm()})
 
 
 @login_required
@@ -113,8 +120,10 @@ def edit(request, contact_id):
 
     if request.method == 'POST':
         form = ContactsForm(request.POST, instance=contact, user=request.user)
+
         if form.is_valid():
             form.save()
+
             return redirect('pa_contacts:home')
     else:
         form = ContactsForm(instance=contact, user=request.user)

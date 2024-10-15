@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import main, create, delete, edit
 
+
 app_name = 'pa_contacts'
 
 urlpatterns = [

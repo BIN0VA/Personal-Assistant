@@ -1,0 +1,39 @@
+{% extends 'pa_core/form.html' %}
+
+{% block title %}Create note{% endblock %}
+
+{% block form %}
+    <div class="mb-3">
+        <label for="name">Name</label>
+        {{ form.name }}
+        {% if form.errors.name %}
+            <div id="name-error" class="invalid-feedback">
+                {{ form.errors.name }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="description">Description</label>
+        {{ form.description }}
+        {% if form.errors.description %}
+            <div id="description-error" class="invalid-feedback">
+                {{ form.errors.description }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% if tags %}
+        <div class="mb-3">
+            <label>Tags</label>
+            <div>
+                {% for tag in tags %}
+                    <input type="checkbox" name="tags" value="{{ tag.id }}" id="tag-{{ tag.id }}" class="btn-check" autocomplete="off" />
+                    <label for="tag-{{ tag.id }}" class="btn btn-outline-secondary">{{ tag.name }}</label>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block button %}Add note{% endblock %}

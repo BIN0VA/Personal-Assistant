@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,25 +29,19 @@
             type="image/svg+xml"
         />
     </head>
-    <body>
-        <div class="container">
+    <body class="d-flex flex-column h-100">
+        {% url 'pa_core:home' as root %}
+
+        <div class="container mb-5 flex-shrink-0">
             {% block navigation %}
                 <nav class="navbar navbar-expand-lg bg-light rounded mt-3">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="{% url 'pa_core:home' %}">
+                        <a class="navbar-brand" href="{{ root }}">
                             <i class="bi bi-clipboard-data"></i>
                             {{ project_name }}
                         </a>
 
-                        <button
-                            class="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                        >
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
@@ -57,108 +51,46 @@
                         >
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_core:home' %}"
-                                    >
-                                        Home
-                                    </a>
+                                    <a class="nav-link{% if request.path == root %} active{% endif %}" aria-current="page" href="{{ root }}">Home</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_contacts:home' %}"
-                                    >
-                                        Contacts
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_note:home' %}"
-                                    >
-                                        Notes
-                                    </a>
-                                </li>
-                                <li class="nav-item"></li>
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_tag:home' %}"
-                                    >
-                                        Tags
-                                    </a>
-                                </li>
-                                <li class="nav-item"></li>
-                                    <a
-                                        class="nav-link"
-                                        aria-current="page"
-                                        href="{% url 'pa_file:home' %}"
-                                    >
-                                        Files
-                                    </a>
-                                </li>
+
+                                {% for link, item in main_menu.items %}
+                                    <li class="nav-item">
+                                        <a class="{{ item.classes }}" aria-current="page" href="{{ link }}">{{ item.label }}</a>
+                                    </li>
+                                {% endfor %}
                             </ul>
 
-                            <form
-                                action="{% url 'pa_core:search' %}"
-                                class="d-flex me-3"
-                                role="search"
-                            >
+                            <form action="{% url 'pa_core:search' %}" class="d-flex me-3" role="search">
                                 <div class="input-group">
                                     <div>
-                                        <input
-                                            class="form-control rounded-end-0"
-                                            type="search"
-                                            name="query"
-                                            value="{{ request.GET.query }}"
-                                            placeholder="Search..."
-                                            aria-label="Search"
-                                        />
+                                        <input class="form-control rounded-end-0" type="search" name="query" value="{{ request.GET.query }}" placeholder="Search..." aria-label="Search" />
                                     </div>
 
                                     <select name="type" class="form-select">
                                         {% for type, active in search.items %}
-                                            <option
-                                                value="{{ type }}"
-                                                {% if active %}selected{% endif %}
-                                            >
-                                                {{ type|title }}
-                                            </option>
+                                            <option value="{{ type }}"{% if active %} selected{% endif %}>{{ type|title }}</option>
                                         {% endfor %}
                                     </select>
 
-                                    <button
-                                        class="btn btn-outline-secondary"
-                                        type="submit"
-                                    >
+                                    <button class="btn btn-outline-secondary" type="submit">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                             </form>
 
                             <div class="dropdown text-end">
-                                <button
-                                    class="btn dropdown-toggle d-flex align-items-center"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
+                                <button class="btn dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-circle fs-4 me-2"></i>
                                     <span>{{ user }}</span>
                                 </button>
 
                                 <ul class="dropdown-menu text-small">
-                                    <li>
-                                        <a
-                                            href="{% url 'pa_file:home' %}"
-                                            class="dropdown-item"
-                                        >
-                                            My files
-                                        </a>
-                                    </li>
+                                    {% for link, item in user_menu.items %}
+                                        <li>
+                                            <a href="{{ link }}" class="{{ item.classes }}">My {{ item.label|lower }}</a>
+                                        </li>
+                                    {% endfor %}
 
                                     <li><hr class="dropdown-divider" /></li>
 
@@ -237,14 +169,55 @@
 
                 <main class="mt-4">
                     {% block content %}
-                        It assists you in organizing the phone book, creating
-                        notes, and more.
+                        <p>This web application offers a comprehensive suite of features for managing contacts, notes, and files, all integrated with a powerful tagging system for enhanced organization and search capabilities. It also provides up-to-date news and currency exchange rates, ensuring users have access to real-time information. With robust user authentication and personalized data access, the application ensures a secure and customized experience, while utilizing cloud storage and caching for optimal performance.</p>
+
+                        <div class="row row-cols-3 mt-4 text-center g-4">
+                            {% for title, description in apps.items %}
+                                <div class="col">
+                                    <div class="shadow rounded-4 pt-4 pb-3 px-4 h-100">
+                                        {% if description.icon %}
+                                            <i class="bi bi-{{ description.icon }} fs-1"></i>
+                                        {% endif %}
+
+                                        <h2>{{ title }}</h2>
+                                        <p>{{ description.summary }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-3">
+                                <div id="introduction" class="list-group">
+                                    {% for title, description in apps.items %}
+                                        <a class="list-group-item list-group-item-action" href="#list-item-{{ forloop.counter }}">{{ title }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div data-bs-spy="scroll" data-bs-target="#introduction" data-bs-smooth-scroll="true" tabindex="0" style="height: 300px; overflow: auto;">
+                                    {% for title, description in apps.items %}
+                                        <h3 id="list-item-{{ forloop.counter }}">{{ title }}</h4>
+                                        <p>{{ description.full|safe }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
 
                         {{ news }}
                     {% endblock %}
                 </main>
             </div>
         </div>
+
+        <footer class="footer mt-auto py-3 bg-body-tertiary">
+            <div class="container text-center">
+                <span class="text-body-secondary">
+                    &copy; 2024 {{ project_team|safe }}.
+                    Powered by creativity and love.
+                </span>
+            </div>
+        </footer>
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
