@@ -92,7 +92,13 @@ class UpdateView(View):
             {
                 'form': form,
                 'note': note,
-                'tags': Tag.objects.all(),
+                'tags': [
+                    {
+                        **tag,
+                        'used': note.tags.filter(id=tag['id']).exists(),
+                    }
+                    for tag in Tag.objects.values()
+                ],
             },
         )
 
