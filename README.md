@@ -40,6 +40,20 @@ storage and caching for optimal performance.
   protecting against spam accounts.
 
 
+## Screenshots
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="docs/images/search.jpg" alt="Search" /></td>
+      <td><img src="docs/images/notes.jpg" alt="Notes" /></td>
+    </tr>
+  </tbody>
+</table>
+
+See more [here](https://bin0va.github.io/Personal-Assistant/).
+
+
 ## Installation
 
 **Note:** The Docker command is optional since the project can work with
