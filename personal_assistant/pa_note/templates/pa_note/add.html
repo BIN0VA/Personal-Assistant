@@ -28,8 +28,8 @@
             <label>Tags</label>
             <div>
                 {% for tag in tags %}
-                    <input type="checkbox" name="tags" value="{{ tag.id }}" id="tag-{{ tag.id }}" class="btn-check" autocomplete="off" />
-                    <label for="tag-{{ tag.id }}" class="btn btn-outline-secondary">{{ tag.name }}</label>
+                    <input type="checkbox" name="tags" value="{{ tag.id }}" id="tag-{{ tag.id }}" class="btn-check" autocomplete="off"{% if tag.used %} checked{% endif %} />
+                    <label for="tag-{{ tag.id }}" class="btn btn-outline-secondary btn-sm mb-1 rounded-pill px-3">{{ tag.name }}</label>
                 {% endfor %}
             </div>
         </div>
